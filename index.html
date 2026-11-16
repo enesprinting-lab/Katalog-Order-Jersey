@@ -92,6 +92,22 @@
             font-family: 'Inter', sans-serif;
             background-color: #090d16;
             color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+        /* Mencegah auto-zoom di iOS/Android saat mengetik di input form */
+        @media screen and (max-width: 640px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        /* Sembunyikan scrollbar horizontal pada bar kategori HP */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -113,42 +129,45 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 12px);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white pb-24 lg:pb-0">
 
     <!-- Toast Notification Container (Pengganti alert()) -->
-    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+    <div id="toast-container" class="fixed top-20 left-4 right-4 sm:left-auto sm:right-4 z-50 flex flex-col gap-2 sm:max-w-sm pointer-events-none"></div>
 
     <!-- Header / Navbar -->
     <header class="sticky top-0 z-40 bg-navy-950/90 backdrop-blur-md border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14 sm:h-16">
                 <!-- Brand Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('buyer')">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                        <i class="fa-solid fa-shirt text-white text-lg"></i>
+                <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer" onclick="switchView('buyer')">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 flex-shrink-0">
+                        <i class="fa-solid fa-shirt text-white text-base sm:text-lg"></i>
                     </div>
-                    <div>
-                        <span id="header-store-name" class="font-extrabold text-lg tracking-tight text-white">PRO<span class="text-emerald-400">JERSEY</span></span>
-                        <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Custom Apparel & Studio</span>
+                    <div class="min-w-0">
+                        <span id="header-store-name" class="font-extrabold text-base sm:text-lg tracking-tight text-white block truncate">PRO<span class="text-emerald-400">JERSEY</span></span>
+                        <span class="block text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1 truncate">Custom Apparel & Studio</span>
                     </div>
                 </div>
 
                 <!-- Navigation Actions -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <button id="nav-buyer-btn" onclick="switchView('buyer')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30">
-                        <i class="fa-solid fa-store mr-1.5"></i>Katalog
+                <div class="flex items-center gap-1.5 sm:gap-3">
+                    <button id="nav-buyer-btn" onclick="switchView('buyer')" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30 active:scale-95">
+                        <i class="fa-solid fa-store sm:mr-1.5"></i><span class="hidden xs:inline sm:inline ml-1 sm:ml-0">Katalog</span>
                     </button>
 
                     <!-- Tombol Login / Dashboard Admin -->
-                    <button id="nav-admin-btn" onclick="handleAdminNavClick()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2">
+                    <button id="nav-admin-btn" onclick="handleAdminNavClick()" class="px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 sm:gap-2 active:scale-95">
                         <i id="nav-admin-icon" class="fa-solid fa-lock text-amber-400"></i>
-                        <span id="nav-admin-text">Login Admin</span>
+                        <span id="nav-admin-text">Admin</span>
                     </button>
 
                     <!-- Tombol Logout Cepat di Header (Muncul saat sudah login) -->
-                    <button id="nav-logout-btn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 items-center gap-1.5" title="Keluar Mode Admin">
+                    <button id="nav-logout-btn" onclick="logoutAdmin()" class="hidden px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 items-center gap-1.5 active:scale-95" title="Keluar Mode Admin">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span class="hidden sm:inline">Logout</span>
                     </button>
@@ -160,19 +179,19 @@
     <!-- =====================================================================
          TAMPILAN PEMBELI (KATALOG & KALKULATOR DP)
     ====================================================================== -->
-    <main id="buyer-view" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <main id="buyer-view" class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         
         <!-- Hero Banner -->
-        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-navy-800 to-emerald-950 border border-slate-800 p-6 sm:p-8 mb-8 shadow-xl">
+        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-navy-800 to-emerald-950 border border-slate-800 p-4 sm:p-8 mb-5 sm:mb-8 shadow-xl">
             <div class="relative z-10 max-w-2xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 mb-3">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 mb-2 sm:mb-3">
                     <i class="fa-solid fa-bolt"></i> Simulasi Order & DP Real-Time
                 </span>
-                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
+                <h1 class="text-xl sm:text-4xl font-extrabold text-white tracking-tight mb-1.5 sm:mb-2 leading-snug">
                     Pilih Desain Jersey & Hitung DP Otomatis
                 </h1>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Klik desain jersey favorit tim Anda di bawah ini, masukkan jumlah pesanan, dan sistem akan langsung menghitung estimasi total biaya serta nominal Down Payment (DP) yang ringan.
+                <p class="text-slate-300 text-xs sm:text-base leading-relaxed">
+                    Tap desain jersey favorit tim Anda di bawah ini, atur jumlah pesanan, dan lihat nominal DP otomatis.
                 </p>
             </div>
             <div class="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 opacity-15 pointer-events-none">
@@ -181,43 +200,43 @@
         </div>
 
         <!-- Filter Kategori & Pencarian -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto" id="category-filters">
-                <button onclick="filterCategory('Semua')" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap">Semua Desain</button>
-                <button onclick="filterCategory('Futsal / Sepak Bola')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Futsal / Bola</button>
-                <button onclick="filterCategory('Esports / Gaming')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Esports</button>
-                <button onclick="filterCategory('Basket / Voli')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Basket / Voli</button>
-                <button onclick="filterCategory('Lari / Sepeda')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Lari / Sepeda</button>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 mb-5 sm:mb-6">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 md:pb-0 w-full md:w-auto" id="category-filters">
+                <button onclick="filterCategory('Semua')" class="cat-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap active:scale-95">Semua</button>
+                <button onclick="filterCategory('Futsal / Sepak Bola')" class="cat-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap active:scale-95">Futsal / Bola</button>
+                <button onclick="filterCategory('Esports / Gaming')" class="cat-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap active:scale-95">Esports</button>
+                <button onclick="filterCategory('Basket / Voli')" class="cat-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap active:scale-95">Basket / Voli</button>
+                <button onclick="filterCategory('Lari / Sepeda')" class="cat-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap active:scale-95">Lari / Sepeda</button>
             </div>
-            <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="flex items-center gap-2.5 w-full md:w-auto">
                 <div class="relative flex-1 md:w-64">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="catalog-search" oninput="handleSearchCatalog(this.value)" placeholder="Cari nama desain jersey..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="catalog-search" oninput="handleSearchCatalog(this.value)" placeholder="Cari desain jersey..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                 </div>
-                <div class="text-xs text-slate-400 whitespace-nowrap">
+                <div class="text-xs text-slate-400 whitespace-nowrap bg-slate-900/80 px-2.5 py-2 rounded-xl border border-slate-800">
                     <span id="product-count" class="font-bold text-white">0</span> desain
                 </div>
             </div>
         </div>
 
         <!-- Main Grid: Katalog (Kiri) & Kalkulator DP Sticky (Kanan) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
             
             <!-- Kolom Kiri: Galeri Katalog Jersey (7 Kolom di Desktop) -->
             <div class="lg:col-span-7 space-y-6">
-                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div id="catalog-grid" class="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-5">
                     <!-- Kartu produk dirender via JavaScript -->
                 </div>
 
                 <!-- Tabel Skema Aturan DP Transparan -->
-                <div class="glass-card rounded-2xl p-5 sm:p-6 mt-8">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                <div class="glass-card rounded-2xl p-4 sm:p-6 mt-6 sm:mt-8">
+                    <div class="flex items-center gap-2.5 mb-3.5 sm:mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0">
                             <i class="fa-solid fa-table-list"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-white text-base">Skema Ketentuan Down Payment (DP)</h3>
-                            <p class="text-xs text-slate-400">Nominal DP otomatis menyesuaikan total kuantitas pesanan Anda</p>
+                            <h3 class="font-bold text-white text-sm sm:text-base">Skema Ketentuan Down Payment (DP)</h3>
+                            <p class="text-[11px] sm:text-xs text-slate-400">Nominal DP otomatis menyesuaikan jumlah pesanan Anda</p>
                         </div>
                     </div>
                     <div class="overflow-x-auto rounded-xl border border-slate-700/80">
@@ -375,11 +394,11 @@
 
                     <!-- Tombol Aksi Checkout / WhatsApp & Salin Rincian -->
                     <div class="mt-5 grid grid-cols-1 sm:grid-cols-12 gap-2.5">
-                        <button type="button" onclick="sendToWhatsApp()" class="sm:col-span-8 py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-navy-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.99]">
+                        <button type="button" onclick="sendToWhatsApp()" class="sm:col-span-8 py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-navy-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                             <span>Pesan via WhatsApp</span>
                         </button>
-                        <button type="button" onclick="copyOrderSummary()" class="sm:col-span-4 py-3.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 transition-all">
+                        <button type="button" onclick="copyOrderSummary()" class="sm:col-span-4 py-3.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]">
                             <i class="fa-regular fa-copy"></i>
                             <span>Salin Teks</span>
                         </button>
@@ -388,6 +407,34 @@
             </div>
         </div>
     </main>
+
+    <!-- =====================================================================
+         FLOATING BOTTOM BAR KHUSUS PENGGUNA HP (MOBILE STICKY SUMMARY)
+    ====================================================================== -->
+    <div id="mobile-sticky-bar" class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800 px-3.5 py-2.5 safe-bottom shadow-[0_-10px_25px_rgba(0,0,0,0.5)]">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div onclick="scrollToCalculator()" class="min-w-0 flex-1 cursor-pointer">
+                <div class="flex items-center gap-1.5">
+                    <span id="mob-bar-name" class="text-xs font-bold text-white truncate">Pilih Desain</span>
+                    <span id="mob-bar-qty" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 flex-shrink-0">12 pcs</span>
+                </div>
+                <div class="flex items-baseline gap-1.5 mt-0.5">
+                    <span class="text-[11px] text-slate-400">DP:</span>
+                    <span id="mob-bar-dp" class="text-sm font-extrabold text-emerald-400">Rp 250.000</span>
+                    <span id="mob-bar-total" class="text-[10px] text-slate-500 truncate">(Tot: Rp 1.620.000)</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <button type="button" onclick="scrollToCalculator()" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 active:scale-95">
+                    Atur Qty
+                </button>
+                <button type="button" onclick="sendToWhatsApp()" class="px-3.5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 active:scale-95">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>Order</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- =====================================================================
          TAMPILAN ADMIN / PENJUAL (MANAJEMEN PRODUK & GANTI PASSWORD)
@@ -532,11 +579,12 @@
     </section>
 
     <!-- =====================================================================
-         MODAL LOGIN ADMIN
+         MODAL LOGIN ADMIN (BOTTOM SHEET DI HP, CENTER MODAL DI DESKTOP)
     ====================================================================== -->
-    <div id="login-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-fade-in">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+    <div id="login-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-slate-900 border-t sm:border border-slate-700 rounded-t-3xl sm:rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative safe-bottom">
+            <div class="w-10 h-1 bg-slate-700 rounded-full mx-auto mb-4 sm:hidden"></div>
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -575,16 +623,17 @@
     </div>
 
     <!-- =====================================================================
-         MODAL TAMBAH / EDIT PRODUK JERSEY (ADMIN)
+         MODAL TAMBAH / EDIT PRODUK JERSEY (ADMIN - BOTTOM SHEET DI HP)
     ====================================================================== -->
-    <div id="product-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+    <div id="product-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
+        <div class="bg-slate-900 border-t sm:border border-slate-700 rounded-t-3xl sm:rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto safe-bottom">
+            <div class="w-10 h-1 bg-slate-700 rounded-full mx-auto mb-3 sm:hidden"></div>
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <h2 id="product-modal-title" class="text-xl font-extrabold text-white mb-1">Tambah Desain Jersey Baru</h2>
-            <p class="text-xs text-slate-400 mb-5">Unggah foto desain jersey atau tempel link gambar, lalu simpan</p>
+            <h2 id="product-modal-title" class="text-lg sm:text-xl font-extrabold text-white mb-1 pr-8">Tambah Desain Jersey Baru</h2>
+            <p class="text-xs text-slate-400 mb-4 sm:mb-5">Ambil foto dari kamera/galeri HP atau tempel link gambar</p>
 
             <form id="product-form" onsubmit="handleSaveProduct(event)" class="space-y-4">
                 <input type="hidden" id="edit-product-id">
@@ -597,7 +646,7 @@
                             <i class="fa-solid fa-circle-check mr-1"></i>Foto siap disimpan
                         </span>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-950 p-3.5 rounded-xl border border-dashed border-slate-700">
+                    <div class="flex flex-col sm:flex-row items-center gap-3.5 bg-slate-950 p-3.5 rounded-xl border border-dashed border-slate-700">
                         <div class="relative w-24 h-24 flex-shrink-0">
                             <img id="modal-image-preview" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Preview" onerror="this.onerror=null;this.src=window.getFallbackImageSVG()" class="w-24 h-24 rounded-xl object-cover bg-slate-800 border border-slate-700">
                             <div id="image-loading-spinner" class="hidden absolute inset-0 bg-slate-950/80 rounded-xl flex items-center justify-center">
@@ -606,9 +655,9 @@
                         </div>
                         <div class="flex-1 w-full space-y-2 text-center sm:text-left">
                             <div>
-                                <label for="product-image-file" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 text-xs font-bold cursor-pointer border border-emerald-500/40 transition-all">
+                                <label for="product-image-file" class="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 text-xs font-bold cursor-pointer border border-emerald-500/40 transition-all active:scale-95">
                                     <i class="fa-solid fa-camera"></i>
-                                    <span>Pilih Foto dari Galeri / File</span>
+                                    <span>Ambil Foto / Pilih dari Galeri HP</span>
                                 </label>
                                 <input type="file" id="product-image-file" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
                             </div>
@@ -884,6 +933,7 @@
             const buyerView = document.getElementById('buyer-view');
             const adminView = document.getElementById('admin-view');
             const buyerBtn = document.getElementById('nav-buyer-btn');
+            const mobileStickyBar = document.getElementById('mobile-sticky-bar');
 
             if (view === 'admin') {
                 if (!isAdminLoggedIn) {
@@ -891,13 +941,15 @@
                     return;
                 }
                 buyerView.classList.add('hidden');
+                if (mobileStickyBar) mobileStickyBar.classList.add('hidden');
                 adminView.classList.remove('hidden');
-                buyerBtn.className = 'px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/70 text-slate-300 hover:bg-slate-700 border border-slate-700';
+                buyerBtn.className = 'px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/70 text-slate-300 hover:bg-slate-700 border border-slate-700 active:scale-95';
                 renderAdminProducts();
             } else {
                 adminView.classList.add('hidden');
                 buyerView.classList.remove('hidden');
-                buyerBtn.className = 'px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30';
+                if (mobileStickyBar) mobileStickyBar.classList.remove('hidden');
+                buyerBtn.className = 'px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30 active:scale-95';
                 renderCatalog();
                 populateProductDropdown();
                 if (selectedProductId && products.some(p => p.id === selectedProductId)) {
@@ -907,6 +959,13 @@
                 }
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToCalculator() {
+            const calcEl = document.getElementById('calculator-section');
+            if (calcEl) {
+                calcEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         function handleAdminNavClick() {
@@ -924,17 +983,17 @@
             const logoutBtn = document.getElementById('nav-logout-btn');
 
             if (isAdminLoggedIn) {
-                navText.textContent = 'Dashboard Admin';
+                navText.textContent = 'Dashboard';
                 navIcon.className = 'fa-solid fa-gauge-high text-emerald-400';
-                navBtn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 flex items-center gap-2';
+                navBtn.className = 'px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 flex items-center gap-1.5 sm:gap-2 active:scale-95';
                 if (logoutBtn) {
                     logoutBtn.classList.remove('hidden');
                     logoutBtn.classList.add('flex');
                 }
             } else {
-                navText.textContent = 'Login Admin';
+                navText.textContent = 'Admin';
                 navIcon.className = 'fa-solid fa-lock text-amber-400';
-                navBtn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2';
+                navBtn.className = 'px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 sm:gap-2 active:scale-95';
                 if (logoutBtn) {
                     logoutBtn.classList.add('hidden');
                     logoutBtn.classList.remove('flex');
@@ -951,9 +1010,9 @@
                 const isMatch = (category === 'Semua' && btn.textContent.includes('Semua')) ||
                                 (category !== 'Semua' && btn.getAttribute('onclick').includes(category));
                 if (isMatch) {
-                    btn.className = 'cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap';
+                    btn.className = 'cat-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap active:scale-95';
                 } else {
-                    btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap';
+                    btn.className = 'cat-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap active:scale-95';
                 }
             });
             renderCatalog();
@@ -996,34 +1055,34 @@
                 const isSelected = product.id === selectedProductId;
                 const imgSrc = (product.image && product.image.trim() !== '') ? product.image : window.getFallbackImageSVG();
                 return `
-                    <div onclick="selectProductAndScroll('${product.id}')" class="group cursor-pointer rounded-2xl overflow-hidden bg-slate-900/90 border transition-all duration-300 flex flex-col ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30 shadow-xl shadow-emerald-500/10' : 'border-slate-800 hover:border-slate-600'}">
+                    <div onclick="selectProductAndScroll('${product.id}')" class="group cursor-pointer rounded-2xl overflow-hidden bg-slate-900/90 border transition-all duration-300 flex flex-col active:scale-[0.98] ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30 shadow-xl shadow-emerald-500/10' : 'border-slate-800 hover:border-slate-600'}">
                         <!-- Foto Produk -->
                         <div class="relative aspect-square bg-slate-950 overflow-hidden">
                             <img src="${imgSrc}" alt="${product.name}" onerror="this.onerror=null;this.src=window.getFallbackImageSVG()" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute top-3 left-3">
-                                <span class="px-2.5 py-1 rounded-lg bg-navy-950/85 backdrop-blur-md text-[10px] font-bold uppercase tracking-wider text-emerald-400 border border-slate-700/80">
+                            <div class="absolute top-2 left-2 sm:top-3 sm:left-3 max-w-[75%]">
+                                <span class="block truncate px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-navy-950/85 backdrop-blur-md text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-emerald-400 border border-slate-700/80">
                                     ${product.category}
                                 </span>
                             </div>
                             ${isSelected ? `
-                                <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-emerald-500 text-navy-950 flex items-center justify-center shadow-lg">
-                                    <i class="fa-solid fa-check text-xs font-bold"></i>
+                                <div class="absolute top-2 right-2 sm:top-3 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-500 text-navy-950 flex items-center justify-center shadow-lg">
+                                    <i class="fa-solid fa-check text-[10px] sm:text-xs font-bold"></i>
                                 </div>
                             ` : ''}
                         </div>
 
                         <!-- Info Produk -->
-                        <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors line-clamp-1">${product.name}</h3>
-                                <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${product.description}</p>
+                                <h3 class="font-bold text-white text-xs sm:text-base group-hover:text-emerald-400 transition-colors line-clamp-1">${product.name}</h3>
+                                <p class="text-[11px] sm:text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${product.description}</p>
                             </div>
-                            <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                            <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <div>
-                                    <span class="block text-[10px] text-slate-500 uppercase font-semibold">Harga Satuan</span>
-                                    <span class="font-extrabold text-emerald-400 text-sm sm:text-base">${formatRupiah(product.price)}</span>
+                                    <span class="hidden sm:block text-[10px] text-slate-500 uppercase font-semibold">Harga Satuan</span>
+                                    <span class="font-extrabold text-emerald-400 text-xs sm:text-base">${formatRupiah(product.price)}</span>
                                 </div>
-                                <span class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${isSelected ? 'bg-emerald-500 text-navy-950' : 'bg-slate-800 text-slate-200 group-hover:bg-emerald-500 group-hover:text-navy-950'}">
+                                <span class="w-full sm:w-auto text-center px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all ${isSelected ? 'bg-emerald-500 text-navy-950' : 'bg-slate-800 text-slate-200 group-hover:bg-emerald-500 group-hover:text-navy-950'}">
                                     ${isSelected ? 'Terpilih' : 'Hitung DP'}
                                 </span>
                             </div>
@@ -1130,6 +1189,16 @@
             document.getElementById('res-dp-note').textContent = `Sesuai ketentuan order ${dpRule.label}`;
             document.getElementById('res-dp-amount').textContent = formatRupiah(dpAmount);
             document.getElementById('res-remaining').textContent = formatRupiah(remaining);
+
+            // Sinkronisasi ke Floating Bottom Bar khusus layar HP
+            const mobName = document.getElementById('mob-bar-name');
+            const mobQty = document.getElementById('mob-bar-qty');
+            const mobDp = document.getElementById('mob-bar-dp');
+            const mobTotal = document.getElementById('mob-bar-total');
+            if (mobName) mobName.textContent = product.name;
+            if (mobQty) mobQty.textContent = `${qty} pcs`;
+            if (mobDp) mobDp.textContent = formatRupiah(dpAmount);
+            if (mobTotal) mobTotal.textContent = `(Tot: ${formatRupiah(totalPrice)})`;
 
             document.querySelectorAll('#dp-tier-table tr').forEach(tr => {
                 if (tr.dataset.tier === dpRule.tierKey) {
