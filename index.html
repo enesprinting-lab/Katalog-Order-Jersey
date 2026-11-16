@@ -347,14 +347,25 @@
                         </div>
 
                         <!-- Detail Rincian Ukuran & Nama Tim -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-3">
                             <div>
-                                <label for="calc-team" class="block text-xs font-semibold text-slate-300 mb-1">Nama Pemesan / Tim</label>
-                                <input type="text" id="calc-team" placeholder="Cth: Garuda FC" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-xs font-semibold text-slate-300">Pilih Ukuran Baju <span class="text-rose-400">*Wajib</span></label>
+                                    <span id="selected-size-badge" class="text-[11px] font-bold text-amber-400">Belum dipilih</span>
+                                </div>
+                                <div id="calc-size-options" class="flex flex-wrap gap-2">
+                                    <!-- Tombol pilihan ukuran baju dirender via JS -->
+                                </div>
                             </div>
-                            <div>
-                                <label for="calc-sizes" class="block text-xs font-semibold text-slate-300 mb-1">Rincian Ukuran</label>
-                                <input type="text" id="calc-sizes" placeholder="Cth: M(4), L(6), XL(2)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label for="calc-team" class="block text-xs font-semibold text-slate-300 mb-1">Nama Pemesan / Tim</label>
+                                    <input type="text" id="calc-team" placeholder="Cth: Garuda FC" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                                </div>
+                                <div>
+                                    <label for="calc-sizes" class="block text-xs font-semibold text-slate-300 mb-1">Detail Pembagian Size</label>
+                                    <input type="text" id="calc-sizes" placeholder="Cth: M(4), L(6), XL(2)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                                </div>
                             </div>
                         </div>
 
@@ -692,6 +703,41 @@
                     </div>
                 </div>
 
+                <!-- Pilihan Ukuran Baju Tersedia -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Ukuran Baju Tersedia *</label>
+                    <div class="grid grid-cols-4 sm:grid-cols-7 gap-2" id="admin-size-checkboxes">
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="XS" class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">XS</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="S" checked class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">S</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="M" checked class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">M</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="L" checked class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">L</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="XL" checked class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">XL</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="XXL" checked class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">XXL</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="product-sizes" value="XXXL" class="peer hidden">
+                            <div class="text-center py-2 rounded-xl border border-slate-700 bg-slate-950 text-xs font-bold text-slate-400 peer-checked:bg-emerald-500 peer-checked:text-navy-950 peer-checked:border-emerald-500 transition-all">3XL</div>
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Deskripsi Singkat -->
                 <div>
                     <label for="product-desc" class="block text-xs font-semibold text-slate-300 mb-1.5">Deskripsi Bahan & Detail *</label>
@@ -746,6 +792,7 @@
                 name: 'Garuda Emerald Striker',
                 category: 'Futsal / Sepak Bola',
                 price: 135000,
+                sizes: ['S', 'M', 'L', 'XL', 'XXL'],
                 description: 'Bahan Dryfit Milano premium, motif chevron modern, full sublimasi anti luntur, gratis custom nama & nomor.',
                 image: createJerseySVG('#059669', '#064e3b', '#fbbf24', 'chevron', '10')
             },
@@ -754,6 +801,7 @@
                 name: 'Cyber Phoenix Esports Pro',
                 category: 'Esports / Gaming',
                 price: 145000,
+                sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
                 description: 'Kerah V-Neck sporty, bahan Brazil emboss adem untuk turnamen berjam-jam, bebas pasang logo sponsor tim.',
                 image: createJerseySVG('#1e293b', '#f97316', '#38bdf8', 'slash', '01')
             },
@@ -762,6 +810,7 @@
                 name: 'Royal Navy Classic Stripes',
                 category: 'Futsal / Sepak Bola',
                 price: 130000,
+                sizes: ['S', 'M', 'L', 'XL', 'XXL'],
                 description: 'Desain garis vertikal klasik elegan, jahitan rantai standar distro olahraga, menyerap keringat dengan cepat.',
                 image: createJerseySVG('#1d4ed8', '#0f172a', '#34d399', 'stripes', '07')
             },
@@ -770,6 +819,7 @@
                 name: 'Crimson Slam Hoops Edition',
                 category: 'Basket / Voli',
                 price: 140000,
+                sizes: ['M', 'L', 'XL', 'XXL'],
                 description: 'Bahan Dryfit Benzema berpori besar, potongan ergonomis bebas bergerak untuk tim voli maupun basket.',
                 image: createJerseySVG('#be123c', '#4c0519', '#fde047', 'diamond', '23')
             },
@@ -778,6 +828,7 @@
                 name: 'Volt Runner Aero Series',
                 category: 'Lari / Sepeda',
                 price: 125000,
+                sizes: ['XS', 'S', 'M', 'L', 'XL'],
                 description: 'Super ringan (ultralight) khusus komunitas lari dan gowes, warna neon cerah dan visibilitas tinggi.',
                 image: createJerseySVG('#0f766e', '#115e59', '#a3e635', 'slash', '88')
             },
@@ -786,6 +837,7 @@
                 name: 'Obsidian Gold Championship',
                 category: 'Esports / Gaming',
                 price: 150000,
+                sizes: ['S', 'M', 'L', 'XL', 'XXL'],
                 description: 'Edisi eksklusif hitam pekat dengan aksen emas mewah, cocok untuk jersey official manajemen & pemain.',
                 image: createJerseySVG('#18181b', '#eab308', '#f8fafc', 'chevron', '99')
             }
@@ -802,6 +854,7 @@
 
         let products = [];
         let selectedProductId = null;
+        let selectedSize = '';
         let currentCategoryFilter = 'Semua';
         let currentSearchQuery = '';
         let isAdminLoggedIn = false;
@@ -1076,6 +1129,9 @@
                             <div>
                                 <h3 class="font-bold text-white text-xs sm:text-base group-hover:text-emerald-400 transition-colors line-clamp-1">${product.name}</h3>
                                 <p class="text-[11px] sm:text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${product.description}</p>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    ${(product.sizes && product.sizes.length ? product.sizes : ['S', 'M', 'L', 'XL', 'XXL']).map(sz => `<span class="px-1.5 py-0.5 rounded bg-slate-800 text-[9px] sm:text-[10px] font-bold text-slate-300 border border-slate-700/80">${sz}</span>`).join('')}
+                                </div>
                             </div>
                             <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <div>
@@ -1107,6 +1163,11 @@
             if (!product) return;
 
             selectedProductId = product.id;
+            const availableSizes = (product.sizes && product.sizes.length > 0) ? product.sizes : ['S', 'M', 'L', 'XL', 'XXL'];
+            if (!availableSizes.includes(selectedSize)) {
+                selectedSize = '';
+            }
+
             document.getElementById('calc-product-select').value = product.id;
             const imgSrc = (product.image && product.image.trim() !== '') ? product.image : window.getFallbackImageSVG();
             document.getElementById('calc-preview-img').src = imgSrc;
@@ -1114,8 +1175,39 @@
             document.getElementById('calc-preview-name').textContent = product.name;
             document.getElementById('calc-preview-price').textContent = `${formatRupiah(product.price)} / pcs`;
 
+            renderSizeSelector(availableSizes);
             renderCatalog();
             recalculateDP();
+        }
+
+        function renderSizeSelector(availableSizes) {
+            const container = document.getElementById('calc-size-options');
+            const badge = document.getElementById('selected-size-badge');
+            if (!container) return;
+
+            if (selectedSize) {
+                badge.textContent = `Ukuran: ${selectedSize}`;
+                badge.className = 'text-[11px] font-bold text-emerald-400';
+            } else {
+                badge.textContent = 'Wajib pilih ukuran!';
+                badge.className = 'text-[11px] font-bold text-amber-400';
+            }
+
+            container.innerHTML = availableSizes.map(sz => {
+                const isActive = selectedSize === sz;
+                return `
+                    <button type="button" onclick="selectBuyerSize('${sz}')" class="min-w-[44px] px-3 py-2 rounded-xl text-xs font-extrabold border transition-all active:scale-95 ${isActive ? 'bg-emerald-500 text-navy-950 border-emerald-400 shadow-lg shadow-emerald-500/20' : 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700'}">
+                        ${sz}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectBuyerSize(size) {
+            selectedSize = size;
+            const product = products.find(p => p.id === selectedProductId);
+            const availableSizes = (product && product.sizes && product.sizes.length > 0) ? product.sizes : ['S', 'M', 'L', 'XL', 'XXL'];
+            renderSizeSelector(availableSizes);
         }
 
         function selectProductAndScroll(id) {
@@ -1214,7 +1306,8 @@
             const storeName = localStorage.getItem(STORAGE_KEYS.STORE_NAME) || 'ProJersey Studio';
             const qty = Math.max(1, parseInt(document.getElementById('calc-qty').value, 10) || 1);
             const team = document.getElementById('calc-team').value.trim() || '-';
-            const sizes = document.getElementById('calc-sizes').value.trim() || '-';
+            const sizesDetail = document.getElementById('calc-sizes').value.trim();
+            const sizeSummary = sizesDetail ? `${selectedSize} (${sizesDetail})` : selectedSize;
             const notes = document.getElementById('calc-notes').value.trim() || '-';
 
             const totalPrice = product.price * qty;
@@ -1226,9 +1319,9 @@
                 `Halo Admin *${storeName}*, saya ingin memesan custom jersey:`,
                 ``,
                 `*Desain:* ${product.name} (${product.category})`,
+                `*Ukuran Baju:* ${sizeSummary}`,
                 `*Jumlah:* ${qty} pcs`,
                 `*Nama Tim / Pemesan:* ${team}`,
-                `*Rincian Ukuran:* ${sizes}`,
                 `*Catatan:* ${notes}`,
                 ``,
                 `*RINCIAN BIAYA & DP:*`,
@@ -1241,7 +1334,22 @@
             ].join('\n');
         }
 
+        function validateBuyerSizeBeforeOrder() {
+            if (!selectedSize) {
+                showToast('Silakan pilih ukuran baju terlebih dahulu sebelum memesan!', 'error');
+                scrollToCalculator();
+                const sizeBox = document.getElementById('calc-size-options');
+                if (sizeBox) {
+                    sizeBox.classList.add('ring-2', 'ring-amber-400', 'rounded-xl', 'p-1');
+                    setTimeout(() => sizeBox.classList.remove('ring-2', 'ring-amber-400', 'rounded-xl', 'p-1'), 1800);
+                }
+                return false;
+            }
+            return true;
+        }
+
         function sendToWhatsApp() {
+            if (!validateBuyerSizeBeforeOrder()) return;
             const waNumber = (localStorage.getItem(STORAGE_KEYS.WA_NUMBER) || '6281234567890').replace(/[^0-9]/g, '');
             const text = encodeURIComponent(buildOrderMessage());
             const url = `https://wa.me/${waNumber}?text=${text}`;
@@ -1249,6 +1357,7 @@
         }
 
         function copyOrderSummary() {
+            if (!validateBuyerSizeBeforeOrder()) return;
             const text = buildOrderMessage();
             const textarea = document.createElement('textarea');
             textarea.value = text;
@@ -1382,6 +1491,9 @@
                             <div>
                                 <h3 class="font-bold text-white text-base">${p.name}</h3>
                                 <p class="text-emerald-400 font-extrabold text-sm mt-0.5">${formatRupiah(p.price)} / pcs</p>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    ${(p.sizes && p.sizes.length ? p.sizes : ['S', 'M', 'L', 'XL', 'XXL']).map(sz => `<span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-bold text-slate-300 border border-slate-700">${sz}</span>`).join('')}
+                                </div>
                                 <p class="text-xs text-slate-400 mt-2 line-clamp-2">${p.description}</p>
                             </div>
                             <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-800">
@@ -1433,6 +1545,8 @@
             urlInput.value = '';
             setImageUploadState(false, 'Foto siap disimpan');
 
+            const sizeCheckboxes = document.querySelectorAll('input[name="product-sizes"]');
+
             if (productId) {
                 const product = products.find(p => p.id === productId);
                 if (!product) return;
@@ -1442,6 +1556,12 @@
                 catInput.value = product.category;
                 priceInput.value = product.price;
                 descInput.value = product.description;
+
+                const prodSizes = (product.sizes && product.sizes.length > 0) ? product.sizes : ['S', 'M', 'L', 'XL', 'XXL'];
+                sizeCheckboxes.forEach(cb => {
+                    cb.checked = prodSizes.includes(cb.value);
+                });
+
                 currentImageBase64 = (product.image && product.image.trim() !== '') ? product.image : window.getFallbackImageSVG();
                 previewImg.src = currentImageBase64;
                 if (currentImageBase64.startsWith('http')) {
@@ -1454,6 +1574,12 @@
                 catInput.value = 'Futsal / Sepak Bola';
                 priceInput.value = '135000';
                 descInput.value = '';
+
+                const defaultSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+                sizeCheckboxes.forEach(cb => {
+                    cb.checked = defaultSizes.includes(cb.value);
+                });
+
                 currentImageBase64 = window.createJerseySVG('#10b981', '#0f172a', '#fbbf24', 'chevron', 'NEW');
                 previewImg.src = currentImageBase64;
             }
@@ -1549,10 +1675,16 @@
             const category = document.getElementById('product-category').value;
             const price = parseInt(document.getElementById('product-price').value, 10);
             const description = document.getElementById('product-desc').value.trim();
+            const selectedSizes = Array.from(document.querySelectorAll('input[name="product-sizes"]:checked')).map(cb => cb.value);
             const finalImage = (currentImageBase64 && currentImageBase64.trim() !== '') ? currentImageBase64 : window.getFallbackImageSVG();
 
             if (!name || isNaN(price) || price < 1000) {
                 showToast('Mohon lengkapi nama dan harga dengan benar.', 'error');
+                return;
+            }
+
+            if (selectedSizes.length === 0) {
+                showToast('Pilih minimal 1 ukuran baju yang tersedia!', 'error');
                 return;
             }
 
@@ -1565,6 +1697,7 @@
                         name,
                         category,
                         price,
+                        sizes: selectedSizes,
                         description,
                         image: finalImage
                     };
@@ -1576,6 +1709,7 @@
                     name,
                     category,
                     price,
+                    sizes: selectedSizes,
                     description,
                     image: finalImage
                 };
