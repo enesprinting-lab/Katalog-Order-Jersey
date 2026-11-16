@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -73,7 +73,7 @@
                         <i class="fa-solid fa-shirt text-white text-lg"></i>
                     </div>
                     <div>
-                        <span class="font-extrabold text-lg tracking-tight text-white">PRO<span class="text-emerald-400">JERSEY</span></span>
+                        <span id="header-store-name" class="font-extrabold text-lg tracking-tight text-white">PRO<span class="text-emerald-400">JERSEY</span></span>
                         <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Custom Apparel & Studio</span>
                     </div>
                 </div>
@@ -88,6 +88,12 @@
                     <button id="nav-admin-btn" onclick="handleAdminNavClick()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2">
                         <i id="nav-admin-icon" class="fa-solid fa-lock text-amber-400"></i>
                         <span id="nav-admin-text">Login Admin</span>
+                    </button>
+
+                    <!-- Tombol Logout Cepat di Header (Muncul saat sudah login) -->
+                    <button id="nav-logout-btn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 items-center gap-1.5" title="Keluar Mode Admin">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="hidden sm:inline">Logout</span>
                     </button>
                 </div>
             </div>
@@ -110,23 +116,23 @@
                 </h1>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
                     Klik desain jersey favorit tim Anda di bawah ini, masukkan jumlah pesanan, dan sistem akan langsung menghitung estimasi total biaya serta nominal Down Payment (DP) yang ringan.
-                </p>
-            </div>
-            <!-- Decorative Icon -->
-            <i class="fa-solid fa-shield-halved absolute -right-6 -bottom-8 text-[180px] text-emerald-500/5 pointer-events-none"></i>
-        </div>
-
-        <!-- Filter Kategori -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto" id="category-filters">
+        <!-- Filter Kategori & Pencarian -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto" id="category-filters">
                 <button onclick="filterCategory('Semua')" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap">Semua Desain</button>
                 <button onclick="filterCategory('Futsal / Sepak Bola')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Futsal / Bola</button>
                 <button onclick="filterCategory('Esports / Gaming')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Esports</button>
                 <button onclick="filterCategory('Basket / Voli')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Basket / Voli</button>
                 <button onclick="filterCategory('Lari / Sepeda')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Lari / Sepeda</button>
             </div>
-            <div class="text-xs text-slate-400">
-                Menampilkan <span id="product-count" class="font-bold text-white">0</span> desain tersedia
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="relative flex-1 md:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="catalog-search" oninput="handleSearchCatalog(this.value)" placeholder="Cari nama desain jersey..." class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div class="text-xs text-slate-400 whitespace-nowrap">
+                    <span id="product-count" class="font-bold text-white">0</span> desain
+                </div>
             </div>
         </div>
 
@@ -278,6 +284,10 @@
 
                     <!-- Box Hasil Perhitungan -->
                     <div class="mt-6 bg-slate-950/90 rounded-2xl p-4 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Harga Satuan</span>
+                            <span id="res-unit-price" class="font-semibold text-slate-200">Rp 135.000</span>
+                        </div>
                         <div class="flex justify-between items-center text-xs sm:text-sm">
                             <span class="text-slate-400">Estimasi Total Harga (<span id="res-qty-label">12</span> pcs)</span>
                             <span id="res-total-price" class="font-bold text-white">Rp 1.620.000</span>
@@ -321,7 +331,7 @@
     <section id="admin-view" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         <!-- Header Dashboard Admin -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-8">
             <div>
                 <div class="flex items-center gap-2">
                     <span class="px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">Mode Penjual / Admin</span>
@@ -329,10 +339,14 @@
                 </div>
                 <h1 class="text-2xl font-extrabold text-white mt-1">Dashboard Manajemen Katalog</h1>
             </div>
-            <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
                 <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-bold text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
                     <i class="fa-solid fa-plus"></i>
                     <span>Tambah Jersey</span>
+                </button>
+                <button onclick="switchAdminTab('settings')" class="px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 font-bold text-sm flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Ganti Password</span>
                 </button>
                 <button onclick="logoutAdmin()" class="px-4 py-2.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 font-semibold text-sm flex items-center gap-2 transition-all">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -341,13 +355,13 @@
             </div>
         </div>
 
-        <!-- Tabs Admin: Daftar Produk | Pengaturan Keamanan & Toko -->
-        <div class="flex gap-2 border-b border-slate-800 pb-4 mb-6">
-            <button id="tab-products-btn" onclick="switchAdminTab('products')" class="px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30">
-                <i class="fa-solid fa-shirt mr-2"></i>Daftar Desain Jersey (<span id="admin-prod-count">0</span>)
+        <!-- Tabs Admin: Daftar Produk | Ganti Password & Pengaturan -->
+        <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4 mb-6">
+            <button id="tab-products-btn" onclick="switchAdminTab('products')" class="px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30 transition-all">
+                <i class="fa-solid fa-shirt mr-2"></i>Kelola Produk & Foto (<span id="admin-prod-count">0</span>)
             </button>
-            <button id="tab-settings-btn" onclick="switchAdminTab('settings')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
-                <i class="fa-solid fa-key mr-2"></i>Ganti Password & Nomor WA
+            <button id="tab-settings-btn" onclick="switchAdminTab('settings')" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 transition-all">
+                <i class="fa-solid fa-key text-amber-400 mr-2"></i>Ganti Password & Pengaturan Toko
             </button>
         </div>
 
@@ -358,61 +372,86 @@
             </div>
         </div>
 
-        <!-- TAB 2: Pengaturan Keamanan (Ganti Password) & Nomor WhatsApp Penjual -->
+        <!-- TAB 2: Pengaturan Keamanan (Ganti Password) & Pengaturan Toko -->
         <div id="admin-tab-settings" class="hidden grid-cols-1 md:grid-cols-2 gap-6">
             
             <!-- Form Ganti Password Admin -->
-            <div class="glass-card rounded-2xl p-6">
+            <div class="glass-card rounded-2xl p-6 border border-amber-500/30">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-white text-lg">Ubah Password Admin</h3>
-                        <p class="text-xs text-slate-400">Ganti password login sesuai keinginan Anda</p>
+                        <h3 class="font-bold text-white text-lg">Menu Ganti Password Admin</h3>
+                        <p class="text-xs text-slate-400">Ubah password login sesuai keinginan Anda</p>
                     </div>
+                </div>
+
+                <!-- Status Banner Password Berhasil Diubah -->
+                <div id="password-success-banner" class="hidden mb-4 p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                    <span><strong>Berhasil!</strong> Password Admin telah diperbarui dan tersimpan permanen.</span>
                 </div>
 
                 <form id="change-password-form" onsubmit="handleChangePassword(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password Lama</label>
-                        <input type="password" id="old-password" required placeholder="Masukkan password saat ini" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                        <div class="relative">
+                            <input type="password" id="old-password" required placeholder="Masukkan password saat ini" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 pr-10">
+                            <button type="button" onclick="toggleInputVisibility('old-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                                <i class="fa-regular fa-eye text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password Baru</label>
-                        <input type="password" id="new-password" required minlength="4" placeholder="Minimal 4 karakter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                        <div class="relative">
+                            <input type="password" id="new-password" required minlength="4" placeholder="Minimal 4 karakter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 pr-10">
+                            <button type="button" onclick="toggleInputVisibility('new-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                                <i class="fa-regular fa-eye text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1.5">Konfirmasi Password Baru</label>
-                        <input type="password" id="confirm-password" required minlength="4" placeholder="Ulangi password baru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                        <div class="relative">
+                            <input type="password" id="confirm-password" required minlength="4" placeholder="Ulangi password baru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 pr-10">
+                            <button type="button" onclick="toggleInputVisibility('confirm-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                                <i class="fa-regular fa-eye text-xs"></i>
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20">
+                    <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 font-extrabold text-sm transition-all shadow-lg shadow-amber-500/20">
                         <i class="fa-solid fa-floppy-disk mr-1.5"></i>Simpan Password Baru
                     </button>
                 </form>
             </div>
 
-            <!-- Pengaturan Nomor WhatsApp Penjual -->
+            <!-- Pengaturan Identitas Toko & Nomor WhatsApp Penjual -->
             <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center gap-3 mb-5">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                            <i class="fa-solid fa-store text-lg"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-white text-lg">Nomor WhatsApp Penerima Order</h3>
-                            <p class="text-xs text-slate-400">Tujuan pengiriman rincian order dari pembeli</p>
+                            <h3 class="font-bold text-white text-lg">Pengaturan Toko & WhatsApp</h3>
+                            <p class="text-xs text-slate-400">Sesuaikan nama brand & nomor penerima order</p>
                         </div>
                     </div>
 
                     <form onsubmit="handleSaveStoreSettings(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nomor WhatsApp (Format 628...)</label>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nama Toko / Apparel</label>
+                            <input type="text" id="store-name-input" required placeholder="Contoh: PROJERSEY" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nomor WhatsApp Admin (Format 628...)</label>
                             <input type="text" id="store-wa-input" required placeholder="Contoh: 6281234567890" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
                             <p class="text-[11px] text-slate-400 mt-1.5">Gunakan kode negara <code class="text-emerald-400">62</code> tanpa tanda + atau spasi.</p>
                         </div>
-                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-bold text-sm transition-all">
-                            <i class="fa-solid fa-check mr-1.5"></i>Simpan Nomor WhatsApp
+                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/20">
+                            <i class="fa-solid fa-check mr-1.5"></i>Simpan Pengaturan Toko
                         </button>
                     </form>
                 </div>
@@ -690,12 +729,14 @@
             PRODUCTS: 'projersey_products_v1',
             PASSWORD: 'projersey_admin_pass_v1',
             WA_NUMBER: 'projersey_store_wa_v1',
+            STORE_NAME: 'projersey_store_name_v1',
             ADMIN_SESSION: 'projersey_admin_logged_in_v1'
         };
 
         let products = [];
         let selectedProductId = null;
         let currentCategoryFilter = 'Semua';
+        let currentSearchQuery = '';
         let isAdminLoggedIn = false;
         let tempUploadedImageBase64 = '';
 
@@ -704,6 +745,7 @@
         // =====================================================================
         window.addEventListener('DOMContentLoaded', () => {
             loadAppState();
+            applyStoreBranding();
             renderCatalog();
             populateProductDropdown();
             if (products.length > 0) {
@@ -732,13 +774,28 @@
                 localStorage.setItem(STORAGE_KEYS.PASSWORD, 'admin123');
             }
 
-            // Set Nomor WA Default jika belum ada
+            // Set Nomor WA & Nama Toko Default jika belum ada
             if (!localStorage.getItem(STORAGE_KEYS.WA_NUMBER)) {
                 localStorage.setItem(STORAGE_KEYS.WA_NUMBER, '6281234567890');
+            }
+            if (!localStorage.getItem(STORAGE_KEYS.STORE_NAME)) {
+                localStorage.setItem(STORAGE_KEYS.STORE_NAME, 'PROJERSEY');
             }
 
             // Cek sesi login admin
             isAdminLoggedIn = sessionStorage.getItem(STORAGE_KEYS.ADMIN_SESSION) === 'true';
+        }
+
+        function applyStoreBranding() {
+            const storeName = localStorage.getItem(STORAGE_KEYS.STORE_NAME) || 'PROJERSEY';
+            const headerEl = document.getElementById('header-store-name');
+            if (headerEl) {
+                if (storeName.toUpperCase() === 'PROJERSEY') {
+                    headerEl.innerHTML = `PRO<span class="text-emerald-400">JERSEY</span>`;
+                } else {
+                    headerEl.textContent = storeName;
+                }
+            }
         }
 
         function saveProductsToStorage() {
@@ -855,6 +912,7 @@
 
             // Update UI Kalkulator
             document.getElementById('active-tier-badge').textContent = tierInfo.label;
+            document.getElementById('res-unit-price').textContent = formatRupiah(unitPrice);
             document.getElementById('res-qty-label').textContent = qty;
             document.getElementById('res-total-price').textContent = formatRupiah(totalPrice);
             document.getElementById('res-dp-amount').textContent = formatRupiah(tierInfo.dp);
@@ -904,11 +962,21 @@
             renderCatalog();
         }
 
+        function handleSearchCatalog(query) {
+            currentSearchQuery = query.trim().toLowerCase();
+            renderCatalog();
+        }
+
         function renderCatalog() {
             const grid = document.getElementById('catalog-grid');
-            const filtered = currentCategoryFilter === 'Semua'
-                ? products
-                : products.filter(p => p.category === currentCategoryFilter);
+            const filtered = products.filter(p => {
+                const matchCat = currentCategoryFilter === 'Semua' || p.category === currentCategoryFilter;
+                const matchSearch = !currentSearchQuery ||
+                    p.name.toLowerCase().includes(currentSearchQuery) ||
+                    p.description.toLowerCase().includes(currentSearchQuery) ||
+                    p.category.toLowerCase().includes(currentSearchQuery);
+                return matchCat && matchSearch;
+            });
 
             document.getElementById('product-count').textContent = filtered.length;
 
@@ -916,7 +984,8 @@
                 grid.innerHTML = `
                     <div class="col-span-full glass-card rounded-2xl p-10 text-center">
                         <i class="fa-solid fa-shirt text-4xl text-slate-600 mb-3"></i>
-                        <p class="text-slate-300 font-semibold">Belum ada desain jersey di kategori ini.</p>
+                        <p class="text-slate-300 font-semibold">Desain jersey tidak ditemukan.</p>
+                        <p class="text-xs text-slate-400 mt-1">Coba kata kunci lain atau pilih kategori "Semua Desain".</p>
                     </div>
                 `;
                 return;
@@ -1062,6 +1131,36 @@
                 navBuyerBtn.className = 'px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-700 border border-slate-700';
                 renderAdminProducts();
                 document.getElementById('store-wa-input').value = localStorage.getItem(STORAGE_KEYS.WA_NUMBER) || '6281234567890';
+                document.getElementById('store-name-input').value = localStorage.getItem(STORAGE_KEYS.STORE_NAME) || 'PROJERSEY';
+            }
+        }
+
+        function handleAdminNavClick() {
+            if (isAdminLoggedIn) {
+                switchView('admin');
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function updateAdminNavUI() {
+            const icon = document.getElementById('nav-admin-icon');
+            const text = document.getElementById('nav-admin-text');
+            const btn = document.getElementById('nav-admin-btn');
+            const logoutBtn = document.getElementById('nav-logout-btn');
+
+            if (isAdminLoggedIn) {
+                icon.className = 'fa-solid fa-gauge-high text-emerald-400';
+                text.textContent = 'Dashboard Admin';
+                btn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 flex items-center gap-2';
+                logoutBtn.classList.remove('hidden');
+                logoutBtn.classList.add('flex');
+            } else {
+                icon.className = 'fa-solid fa-lock text-amber-400';
+                text.textContent = 'Login Admin';
+                btn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2';
+                logoutBtn.classList.add('hidden');
+                logoutBtn.classList.remove('flex');
             }
         }
 
@@ -1111,6 +1210,18 @@
             }
         }
 
+        function toggleInputVisibility(inputId, btnEl) {
+            const input = document.getElementById(inputId);
+            const icon = btnEl.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash text-xs';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye text-xs';
+            }
+        }
+
         function handleAdminLogin(e) {
             e.preventDefault();
             const inputPass = document.getElementById('admin-login-password').value;
@@ -1149,14 +1260,14 @@
                 prodTab.classList.remove('hidden');
                 settingsTab.classList.add('hidden');
                 settingsTab.classList.remove('grid');
-                prodBtn.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30';
-                settingsBtn.className = 'px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60';
+                prodBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30 transition-all';
+                settingsBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 transition-all';
             } else {
                 prodTab.classList.add('hidden');
                 settingsTab.classList.remove('hidden');
                 settingsTab.classList.add('grid');
-                settingsBtn.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-amber-400 border border-amber-500/30';
-                prodBtn.className = 'px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60';
+                settingsBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-bold bg-slate-800 text-amber-400 border border-amber-500/40 transition-all';
+                prodBtn.className = 'px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 transition-all';
             }
         }
 
@@ -1417,35 +1528,47 @@
             const newPass = document.getElementById('new-password').value;
             const confirmPass = document.getElementById('confirm-password').value;
             const currentSavedPass = localStorage.getItem(STORAGE_KEYS.PASSWORD) || 'admin123';
+            const successBanner = document.getElementById('password-success-banner');
 
             if (oldPass !== currentSavedPass) {
+                successBanner.classList.add('hidden');
                 showToast('Password lama tidak sesuai!', 'error');
                 return;
             }
             if (newPass.length < 4) {
+                successBanner.classList.add('hidden');
                 showToast('Password baru minimal 4 karakter.', 'error');
                 return;
             }
             if (newPass !== confirmPass) {
+                successBanner.classList.add('hidden');
                 showToast('Konfirmasi password baru tidak cocok!', 'error');
                 return;
             }
 
             localStorage.setItem(STORAGE_KEYS.PASSWORD, newPass);
             document.getElementById('change-password-form').reset();
+            successBanner.classList.remove('hidden');
             showToast('Password Admin berhasil diperbarui! Gunakan password baru saat login berikutnya.');
         }
 
         function handleSaveStoreSettings(e) {
             e.preventDefault();
+            const storeName = document.getElementById('store-name-input').value.trim();
             const waInput = document.getElementById('store-wa-input').value.trim().replace(/[^0-9]/g, '');
-            if (waInput.length < 9) {
-                showToast('Masukkan nomor WhatsApp yang valid (contoh: 6285126260240).', 'error');
+            if (!storeName) {
+                showToast('Nama toko tidak boleh kosong.', 'error');
                 return;
             }
+            if (waInput.length < 9) {
+                showToast('Masukkan nomor WhatsApp yang valid (contoh: 6281234567890).', 'error');
+                return;
+            }
+            localStorage.setItem(STORAGE_KEYS.STORE_NAME, storeName);
             localStorage.setItem(STORAGE_KEYS.WA_NUMBER, waInput);
             document.getElementById('store-wa-input').value = waInput;
-            showToast('Nomor WhatsApp penerima pesanan berhasil disimpan!');
+            applyStoreBranding();
+            showToast('Pengaturan toko & WhatsApp berhasil disimpan!');
         }
     </script>
 </body>
