@@ -1,29 +1,29 @@
 
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JERSEY ATELIER — Bespoke Sportswear & DP Calculator</title>
+    <title>ProJersey Studio - Katalog Custom & Kalkulator DP</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        obsidian: '#09090b',
-                        charcoal: '#121215',
-                        surface: '#18181c',
-                        gold: {
-                            300: '#fde68a',
-                            400: '#fbbf24',
-                            500: '#d4af37',
-                            600: '#b48a28',
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16',
                         }
                     }
                 }
@@ -32,946 +32,1421 @@
     </script>
     <style>
         body {
-            background-color: #09090b;
-            color: #f4f4f5;
-            background-image: 
-                radial-gradient(circle at 15% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #f8fafc;
         }
-        .glass-panel {
-            background: rgba(24, 24, 28, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #b48a28 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gold-btn {
-            background: linear-gradient(135deg, #e5c158 0%, #c59b27 100%);
-            color: #09090b;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .gold-btn:hover {
-            box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.4);
-            transform: translateY(-1px);
-        }
-        /* Hide number input arrows */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #121215;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 10px;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-amber-500/30 selection:text-amber-200 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
 
-    <!-- FULLSCREEN ADMIN LOGIN GATE (KHUSUS ADMIN) -->
-    <div id="adminGateScreen" class="fixed inset-0 z-50 bg-obsidian flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,175,55,0.12),transparent_60%)] pointer-events-none"></div>
-        <div class="glass-panel border border-amber-400/25 rounded-3xl max-w-md w-full p-8 sm:p-10 shadow-2xl relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-300/20 to-amber-600/10 border border-amber-400/30 text-amber-400 flex items-center justify-center mx-auto mb-5 shadow-inner">
-                <i class="fa-solid fa-crown text-2xl"></i>
-            </div>
-            <span class="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-semibold">Private Workspace</span>
-            <h1 class="font-serif text-3xl font-bold text-white mt-1">
-                ATELIER <span class="gold-gradient-text italic">ADMIN</span>
-            </h1>
-            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-                Portal khusus pengelola katalog jersey, unggah foto desain, pengaturan harga, & simulasi DP.
-            </p>
+    <!-- Toast Notification Container (Pengganti alert()) -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-            <form onsubmit="verifyAdminPassword(event)" class="mt-7 space-y-4 text-left">
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-2">Kata Sandi Admin</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
-                        <input type="password" id="adminPasswordInput" required placeholder="Masukkan kata sandi..." class="w-full pl-10 pr-11 py-3.5 bg-zinc-950/90 border border-white/15 rounded-2xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 transition-colors">
-                        <button type="button" onclick="togglePasswordVisibility('adminPasswordInput', 'eyeIconLogin')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 text-xs p-1.5">
-                            <i id="eyeIconLogin" class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <p id="loginErrorMsg" class="hidden text-[11px] text-red-400 mt-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-exclamation"></i> Kata sandi salah. Silakan periksa kembali.
-                    </p>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 gold-btn font-bold rounded-2xl text-xs uppercase tracking-widest shadow-lg flex items-center justify-center gap-2 mt-2">
-                    <i class="fa-solid fa-right-to-bracket"></i> Buka Studio Admin
-                </button>
-            </form>
-
-            <div class="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px]">
-                <span class="text-zinc-500">Sandi Default Akses:</span>
-                <code class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-white/10 text-amber-300 font-mono font-semibold select-all">admin123</code>
-            </div>
-        </div>
-    </div>
-
-    <!-- Elegant Sticky Navbar -->
-    <nav class="sticky top-0 z-40 glass-panel border-b border-white/[0.06]">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-navy-950/90 backdrop-blur-md border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Luxury Brand Mark -->
-                <div class="flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-300/20 to-amber-600/10 border border-amber-400/30 flex items-center justify-center text-amber-400 shadow-inner">
-                        <i class="fa-solid fa-crown text-base"></i>
+            <div class="flex justify-between items-center h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('buyer')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-shirt text-white text-lg"></i>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-serif font-bold text-xl sm:text-2xl tracking-wide text-white leading-none">
-                                ATELIER <span class="gold-gradient-text italic">ADMIN</span>
-                            </h1>
-                            <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Aktif
-                            </span>
-                        </div>
-                        <p class="text-[10px] uppercase tracking-[0.22em] text-zinc-400 mt-1.5 font-medium">Bespoke Jersey Management & DP Studio</p>
+                        <span class="font-extrabold text-lg tracking-tight text-white">PRO<span class="text-emerald-400">JERSEY</span></span>
+                        <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Custom Apparel & Studio</span>
                     </div>
                 </div>
 
-                <!-- Admin Controls -->
+                <!-- Navigation Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <button onclick="openProductModal()" class="px-4 py-2 gold-btn font-bold rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md">
-                        <i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Tambah Desain</span>
+                    <button id="nav-buyer-btn" onclick="switchView('buyer')" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30">
+                        <i class="fa-solid fa-store mr-1.5"></i>Katalog
                     </button>
-                    <button onclick="openChangePasswordModal()" title="Pengaturan Keamanan & WA" class="w-9 h-9 sm:w-auto sm:px-3.5 sm:py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 hover:text-white font-semibold rounded-full text-xs flex items-center justify-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-gear text-amber-400"></i> <span class="hidden md:inline">Pengaturan</span>
-                    </button>
-                    <button onclick="logoutAdmin()" title="Kunci Layar Admin" class="px-3.5 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/25 text-red-400 font-semibold rounded-full text-xs flex items-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-lock"></i> <span class="hidden sm:inline">Kunci</span>
+
+                    <!-- Tombol Login / Dashboard Admin -->
+                    <button id="nav-admin-btn" onclick="handleAdminNavClick()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2">
+                        <i id="nav-admin-icon" class="fa-solid fa-lock text-amber-400"></i>
+                        <span id="nav-admin-text">Login Admin</span>
                     </button>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex-1 w-full">
+    <!-- =====================================================================
+         TAMPILAN PEMBELI (KATALOG & KALKULATOR DP)
+    ====================================================================== -->
+    <main id="buyer-view" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
-        <!-- Admin Overview & Quick Stats -->
-        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-amber-400/20 shadow-2xl relative overflow-hidden mb-8">
-            <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-400/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 relative z-10">
-                <div>
-                    <span class="inline-block px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300 bg-amber-400/10 border border-amber-400/20 mb-2">
-                        Dashboard Studio Penjual
-                    </span>
-                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                        Manajemen Katalog & <span class="gold-gradient-text italic font-normal">Simulasi DP</span>
-                    </h2>
-                    <p class="text-zinc-400 text-xs sm:text-sm mt-1.5 max-w-xl">
-                        Kelola foto produk, perbarui harga satuan desain, atau hitung cepat rincian uang muka (DP) untuk dikirim ke calon pembeli.
-                    </p>
+        <!-- Hero Banner -->
+        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-slate-900 via-navy-800 to-emerald-950 border border-slate-800 p-6 sm:p-8 mb-8 shadow-xl">
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 mb-3">
+                    <i class="fa-solid fa-bolt"></i> Simulasi Order & DP Real-Time
+                </span>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
+                    Pilih Desain Jersey & Hitung DP Otomatis
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Klik desain jersey favorit tim Anda di bawah ini, masukkan jumlah pesanan, dan sistem akan langsung menghitung estimasi total biaya serta nominal Down Payment (DP) yang ringan.
+                </p>
+            </div>
+            <!-- Decorative Icon -->
+            <i class="fa-solid fa-shield-halved absolute -right-6 -bottom-8 text-[180px] text-emerald-500/5 pointer-events-none"></i>
+        </div>
+
+        <!-- Filter Kategori -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto" id="category-filters">
+                <button onclick="filterCategory('Semua')" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap">Semua Desain</button>
+                <button onclick="filterCategory('Futsal / Sepak Bola')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Futsal / Bola</button>
+                <button onclick="filterCategory('Esports / Gaming')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Esports</button>
+                <button onclick="filterCategory('Basket / Voli')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Basket / Voli</button>
+                <button onclick="filterCategory('Lari / Sepeda')" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap">Lari / Sepeda</button>
+            </div>
+            <div class="text-xs text-slate-400">
+                Menampilkan <span id="product-count" class="font-bold text-white">0</span> desain tersedia
+            </div>
+        </div>
+
+        <!-- Main Grid: Katalog (Kiri) & Kalkulator DP Sticky (Kanan) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Kolom Kiri: Galeri Katalog Jersey (7 Kolom di Desktop) -->
+            <div class="lg:col-span-7 space-y-6">
+                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <!-- Kartu produk dirender via JavaScript -->
                 </div>
 
-                <!-- Mini Metrics -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full lg:w-auto">
-                    <div class="bg-zinc-950/80 border border-white/[0.07] rounded-2xl px-4 py-3">
-                        <p class="text-[10px] uppercase tracking-wider text-zinc-500">Total Desain</p>
-                        <p id="statTotalProducts" class="text-xl font-bold text-white mt-0.5">6</p>
-                    </div>
-                    <div class="bg-zinc-950/80 border border-white/[0.07] rounded-2xl px-4 py-3">
-                        <p class="text-[10px] uppercase tracking-wider text-zinc-500">Skema DP</p>
-                        <p class="text-xl font-bold text-amber-400 mt-0.5">6 Tier</p>
-                    </div>
-                    <div class="col-span-2 sm:col-span-1 bg-zinc-950/80 border border-white/[0.07] rounded-2xl px-4 py-3 flex items-center justify-between sm:block">
+                <!-- Tabel Skema Aturan DP Transparan -->
+                <div class="glass-card rounded-2xl p-5 sm:p-6 mt-8">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                            <i class="fa-solid fa-table-list"></i>
+                        </div>
                         <div>
-                            <p class="text-[10px] uppercase tracking-wider text-zinc-500">Status Akses</p>
-                            <p class="text-xs font-bold text-emerald-400 mt-1 flex items-center gap-1.5">
-                                <i class="fa-solid fa-shield-check"></i> Admin Terkunci Sandi
-                            </p>
+                            <h3 class="font-bold text-white text-base">Skema Ketentuan Down Payment (DP)</h3>
+                            <p class="text-xs text-slate-400">Nominal DP otomatis menyesuaikan total kuantitas pesanan Anda</p>
                         </div>
                     </div>
+                    <div class="overflow-x-auto rounded-xl border border-slate-700/80">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-slate-800/90 text-slate-300 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-4 py-3 font-semibold">Jumlah Pesanan (Qty)</th>
+                                    <th class="px-4 py-3 font-semibold text-right">Nominal DP Wajib</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dp-tier-table" class="divide-y divide-slate-800 bg-slate-900/50">
+                                <tr data-tier="1-2" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">1 – 2 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 50.000</td>
+                                </tr>
+                                <tr data-tier="3-5" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">3 – 5 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 100.000</td>
+                                </tr>
+                                <tr data-tier="6-12" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">6 – 12 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 250.000</td>
+                                </tr>
+                                <tr data-tier="13-24" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">13 – 24 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 300.000</td>
+                                </tr>
+                                <tr data-tier="25-50" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">25 – 50 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 500.000</td>
+                                </tr>
+                                <tr data-tier="51-100" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">51 – 100 pcs</td>
+                                    <td class="px-4 py-2.5 text-right font-bold text-emerald-400">Rp 1.000.000</td>
+                                </tr>
+                                <tr data-tier="100+" class="transition-colors">
+                                    <td class="px-4 py-2.5 font-medium text-slate-200">&gt; 100 pcs (Partai Besar)</td>
+                                    <td class="px-4 py-2.5 text-right font-semibold text-amber-400">Kelipatan / Hubungi Admin</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Filter Pills & Search -->
-        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-8">
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 custom-scrollbar" id="categoryFilters">
-                <button onclick="filterCategory('Semua')" class="cat-btn active px-5 py-2 rounded-full text-xs font-semibold tracking-wide bg-white text-zinc-950 transition-all whitespace-nowrap shadow-sm">Semua Koleksi</button>
-                <button onclick="filterCategory('Futsal / Bola')" class="cat-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide bg-zinc-900/80 text-zinc-400 border border-white/10 hover:text-white hover:border-white/20 transition-all whitespace-nowrap">Futsal / Bola</button>
-                <button onclick="filterCategory('Esports')" class="cat-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide bg-zinc-900/80 text-zinc-400 border border-white/10 hover:text-white hover:border-white/20 transition-all whitespace-nowrap">Esports</button>
-                <button onclick="filterCategory('Basket / Voli')" class="cat-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide bg-zinc-900/80 text-zinc-400 border border-white/10 hover:text-white hover:border-white/20 transition-all whitespace-nowrap">Basket / Voli</button>
-                <button onclick="filterCategory('Sepeda / Lari')" class="cat-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide bg-zinc-900/80 text-zinc-400 border border-white/10 hover:text-white hover:border-white/20 transition-all whitespace-nowrap">Sepeda / Lari</button>
-            </div>
-            
-            <div class="relative w-full md:w-72">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
-                <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Cari kode atau nama desain..." class="w-full pl-10 pr-4 py-2.5 bg-zinc-900/90 border border-white/10 rounded-full text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/50 transition-colors">
-            </div>
-        </div>
+            <!-- Kolom Kanan: Kalkulator DP & Ringkasan Order (5 Kolom di Desktop) -->
+            <div id="calculator-section" class="lg:col-span-5 lg:sticky lg:top-24">
+                <div class="glass-card rounded-2xl p-5 sm:p-6 shadow-2xl border border-emerald-500/20">
+                    <div class="flex items-center justify-between border-b border-slate-700/80 pb-4 mb-5">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <i class="fa-solid fa-calculator text-lg"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-white text-lg leading-tight">Kalkulator DP & Order</h2>
+                                <p class="text-xs text-slate-400">Hitung otomatis estimasi produksi</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] font-semibold text-emerald-400 border border-slate-700">
+                            Otomatis
+                        </span>
+                    </div>
 
-        <!-- Product Grid -->
-        <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
-            <!-- Cards injected via JS -->
-        </div>
+                    <!-- Desain Terpilih Preview -->
+                    <div class="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 mb-5 flex items-center gap-3.5">
+                        <img id="calc-preview-img" src="" alt="Preview Jersey" class="w-16 h-16 rounded-xl object-cover bg-slate-800 border border-slate-700 flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <span id="calc-preview-cat" class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Kategori</span>
+                            <h3 id="calc-preview-name" class="font-bold text-white text-sm truncate">Pilih Desain Jersey</h3>
+                            <p id="calc-preview-price" class="text-xs text-slate-300 font-semibold mt-0.5">Rp 0 / pcs</p>
+                        </div>
+                    </div>
 
-        <!-- Empty State -->
-        <div id="emptyState" class="hidden text-center py-20 glass-panel rounded-3xl">
-            <div class="w-16 h-16 rounded-full bg-zinc-900 border border-white/10 text-zinc-500 flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-shirt text-xl"></i>
-            </div>
-            <h3 class="font-serif text-xl font-bold text-white">Koleksi Tidak Ditemukan</h3>
-            <p class="text-zinc-400 text-xs mt-1.5">Silakan gunakan kata kunci lain atau klik "Tambah Desain" untuk membuat produk baru.</p>
-        </div>
+                    <!-- Form Input Kalkulator -->
+                    <div class="space-y-4">
+                        <!-- Pilih Produk Dropdown (Sinkron dengan klik kartu) -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Desain Jersey</label>
+                            <select id="calc-product-select" onchange="selectProductById(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors">
+                                <!-- Diisi via JS -->
+                            </select>
+                        </div>
 
-    </main>
-
-    <!-- Minimal Footer -->
-    <footer class="border-t border-white/[0.06] py-6 mt-12 text-center text-xs text-zinc-500">
-        <p>© 2026 <span class="text-zinc-300 font-medium">Atelier Jersey Admin Portal</span>. Protected Management System.</p>
-    </footer>
-
-    <!-- MODAL 1: KALKULATOR DP & DETAIL PESANAN -->
+                        <!-- Input Jumlah Pesanan (Qty) -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label for="calc-qty" class="text-xs font-semibold text-slate-300">Jumlah Pesanan (pcs)</label>
+                                <span id="active-tier-badge" class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">Tier: 12 - 24 pcs</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="adjustQty(-1)" class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold flex items-center justify-center border border-slate-700 transition-all">
                                     <i class="fa-solid fa-minus text-xs"></i>
                                 </button>
-                                <input type="number" id="orderQty" value="12" min="1" max="500" oninput="calculateDP()" class="flex-1 h-12 text-center font-bold text-xl bg-zinc-950 border border-amber-400/40 rounded-2xl focus:outline-none focus:border-amber-400 text-white">
-                                <button onclick="adjustQty(1)" class="w-12 h-12 rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-300 flex items-center justify-center transition-colors">
+                                <input type="number" id="calc-qty" value="12" min="1" max="5000" oninput="recalculateDP()" class="flex-1 h-11 bg-slate-900 border border-slate-700 rounded-xl px-4 text-center font-extrabold text-lg text-white focus:outline-none focus:border-emerald-500">
+                                <button type="button" onclick="adjustQty(1)" class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-bold flex items-center justify-center border border-slate-700 transition-all">
                                     <i class="fa-solid fa-plus text-xs"></i>
                                 </button>
                             </div>
+                            <!-- Quick Qty Presets -->
+                            <div class="grid grid-cols-6 gap-1.5 mt-2">
+                                <button type="button" onclick="setQty(2)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">2 pcs</button>
+                                <button type="button" onclick="setQty(5)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">5 pcs</button>
+                                <button type="button" onclick="setQty(12)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">12 pcs</button>
+                                <button type="button" onclick="setQty(20)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">20 pcs</button>
+                                <button type="button" onclick="setQty(30)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">30 pcs</button>
+                                <button type="button" onclick="setQty(60)" class="py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-[11px] font-medium text-slate-300 border border-slate-700/60">60 pcs</button>
+                            </div>
                         </div>
 
-                        <!-- Luxury DP Summary Box -->
-                        <div class="mt-5 rounded-2xl p-4 sm:p-5 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-amber-400/25 relative overflow-hidden">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[11px] font-semibold uppercase tracking-wider text-amber-300 bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-full" id="dpTierBadge">Skema: 6 - 12 Pcs</span>
-                                <span class="text-[11px] text-zinc-400" id="dpPercentageInfo">Estimasi DP</span>
+                        <!-- Detail Rincian Ukuran & Nama Tim -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label for="calc-team" class="block text-xs font-semibold text-slate-300 mb-1">Nama Pemesan / Tim</label>
+                                <input type="text" id="calc-team" placeholder="Cth: Garuda FC" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
                             </div>
-                            
-                            <div class="space-y-2.5">
-                                <div class="flex justify-between text-xs sm:text-sm">
-                                    <span class="text-zinc-400">Total Nilai Pesanan</span>
-                                    <span class="font-semibold text-zinc-200" id="resTotalPrice">Rp 0</span>
-                                </div>
-                                <div class="flex justify-between items-center pt-2.5 border-t border-white/[0.07]">
-                                    <span class="text-xs sm:text-sm font-semibold text-white">Optimasi Wajib DP</span>
-                                    <span class="text-2xl font-bold gold-gradient-text" id="resDpAmount">Rp 0</span>
-    <!-- MODAL 4: PENGATURAN ADMIN (UBAH PASSWORD & WHATSAPP) -->
-    <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-charcoal border border-white/15 rounded-3xl max-w-sm w-full p-7 shadow-2xl">
-            <div class="flex justify-between items-center pb-3 border-b border-white/[0.08]">
-                <div>
-                    <span class="text-[10px] uppercase tracking-[0.2em] text-amber-400 font-semibold">Konfigurasi Studio</span>
-                    <h3 class="font-serif text-lg font-bold text-white">Pengaturan Admin</h3>
+                            <div>
+                                <label for="calc-sizes" class="block text-xs font-semibold text-slate-300 mb-1">Rincian Ukuran</label>
+                                <input type="text" id="calc-sizes" placeholder="Cth: M(4), L(6), XL(2)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <!-- Catatan Tambahan -->
+                        <div>
+                            <label for="calc-notes" class="block text-xs font-semibold text-slate-300 mb-1">Catatan Custom (Opsional)</label>
+                            <input type="text" id="calc-notes" placeholder="Cth: Ganti warna kerah jadi emas, tambah logo dada" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Box Hasil Perhitungan -->
+                    <div class="mt-6 bg-slate-950/90 rounded-2xl p-4 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center text-xs sm:text-sm">
+                            <span class="text-slate-400">Estimasi Total Harga (<span id="res-qty-label">12</span> pcs)</span>
+                            <span id="res-total-price" class="font-bold text-white">Rp 1.620.000</span>
+                        </div>
+                        
+                        <div class="border-t border-dashed border-slate-800 pt-3 flex justify-between items-center">
+                            <div>
+                                <span class="block text-xs font-semibold text-emerald-400 uppercase tracking-wider">Nominal DP Awal</span>
+                                <span id="res-dp-note" class="text-[11px] text-slate-400">Sesuai tier 6 – 12 pcs</span>
+                            </div>
+                            <div class="text-right">
+                                <span id="res-dp-amount" class="text-xl sm:text-2xl font-extrabold text-emerald-400">Rp 250.000</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/90 rounded-xl px-3 py-2 flex justify-between items-center text-xs">
+                            <span class="text-slate-400">Sisa Pelunasan (Setelah Jadi):</span>
+                            <span id="res-remaining" class="font-bold text-slate-200">Rp 1.370.000</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Checkout / WhatsApp & Salin Rincian -->
+                    <div class="mt-5 grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                        <button type="button" onclick="sendToWhatsApp()" class="sm:col-span-8 py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-navy-950 font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all active:scale-[0.99]">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                            <span>Pesan via WhatsApp</span>
+                        </button>
+                        <button type="button" onclick="copyOrderSummary()" class="sm:col-span-4 py-3.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>Salin Teks</span>
+                        </button>
+                    </div>
                 </div>
-                <button onclick="closeChangePasswordModal()" class="w-8 h-8 rounded-full bg-zinc-900 text-zinc-400 hover:text-white flex items-center justify-center">
-                    <i class="fa-solid fa-xmark text-xs"></i>
+            </div>
+        </div>
+    </main>
+
+    <!-- =====================================================================
+         TAMPILAN ADMIN / PENJUAL (MANAJEMEN PRODUK & GANTI PASSWORD)
+    ====================================================================== -->
+    <section id="admin-view" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        
+        <!-- Header Dashboard Admin -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-8">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">Mode Penjual / Admin</span>
+                    <span class="text-xs text-slate-400">Data tersimpan otomatis di browser</span>
+                </div>
+                <h1 class="text-2xl font-extrabold text-white mt-1">Dashboard Manajemen Katalog</h1>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <button onclick="openProductModal()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-bold text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Tambah Jersey</span>
+                </button>
+                <button onclick="logoutAdmin()" class="px-4 py-2.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 font-semibold text-sm flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
                 </button>
             </div>
+        </div>
 
-            <form onsubmit="saveAdminSettings(event)" class="mt-5 space-y-4">
-                <div>
-                    <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">Nomor WhatsApp Admin (628...)</label>
-                    <input type="text" id="adminWaInput" required placeholder="6281234567890" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+        <!-- Tabs Admin: Daftar Produk | Pengaturan Keamanan & Toko -->
+        <div class="flex gap-2 border-b border-slate-800 pb-4 mb-6">
+            <button id="tab-products-btn" onclick="switchAdminTab('products')" class="px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30">
+                <i class="fa-solid fa-shirt mr-2"></i>Daftar Desain Jersey (<span id="admin-prod-count">0</span>)
+            </button>
+            <button id="tab-settings-btn" onclick="switchAdminTab('settings')" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60">
+                <i class="fa-solid fa-key mr-2"></i>Ganti Password & Nomor WA
+            </button>
+        </div>
+
+        <!-- TAB 1: Manajemen Produk -->
+        <div id="admin-tab-products">
+            <div id="admin-product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Item produk admin dirender via JS -->
+            </div>
+        </div>
+
+        <!-- TAB 2: Pengaturan Keamanan (Ganti Password) & Nomor WhatsApp Penjual -->
+        <div id="admin-tab-settings" class="hidden grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Form Ganti Password Admin -->
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-lg">Ubah Password Admin</h3>
+                        <p class="text-xs text-slate-400">Ganti password login sesuai keinginan Anda</p>
+                    </div>
                 </div>
-                <div class="pt-2 border-t border-white/[0.06]">
-                    <p class="text-[10px] uppercase tracking-wider text-amber-400 font-semibold mb-2.5">Ganti Kata Sandi (Opsional)</p>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1">Sandi Lama</label>
-                            <input type="password" id="oldPasswordInput" placeholder="Kosongkan jika tidak diubah" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+
+                <form id="change-password-form" onsubmit="handleChangePassword(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password Lama</label>
+                        <input type="password" id="old-password" required placeholder="Masukkan password saat ini" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Password Baru</label>
+                        <input type="password" id="new-password" required minlength="4" placeholder="Minimal 4 karakter" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">Konfirmasi Password Baru</label>
+                        <input type="password" id="confirm-password" required minlength="4" placeholder="Ulangi password baru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20">
+                        <i class="fa-solid fa-floppy-disk mr-1.5"></i>Simpan Password Baru
+                    </button>
+                </form>
+            </div>
+
+            <!-- Pengaturan Nomor WhatsApp Penjual -->
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
                         </div>
                         <div>
-                            <label class="block text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1">Sandi Baru</label>
-                            <input type="password" id="newPasswordInput" minlength="4" placeholder="Minimal 4 karakter" class="w-full px-3.5 py-2.5 bg-zinc-950 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400">
+                            <h3 class="font-bold text-white text-lg">Nomor WhatsApp Penerima Order</h3>
+                            <p class="text-xs text-slate-400">Tujuan pengiriman rincian order dari pembeli</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="handleSaveStoreSettings(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nomor WhatsApp (Format 628...)</label>
+                            <input type="text" id="store-wa-input" required placeholder="Contoh: 6281234567890" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            <p class="text-[11px] text-slate-400 mt-1.5">Gunakan kode negara <code class="text-emerald-400">62</code> tanpa tanda + atau spasi.</p>
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-bold text-sm transition-all">
+                            <i class="fa-solid fa-check mr-1.5"></i>Simpan Nomor WhatsApp
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Reset Data Default -->
+                <div class="mt-8 pt-5 border-t border-slate-800">
+                    <p class="text-xs text-slate-400 mb-2">Ingin mengembalikan katalog contoh awal?</p>
+                    <button type="button" onclick="confirmResetCatalog()" class="text-xs font-semibold text-rose-400 hover:text-rose-300 underline">
+                        Reset Katalog ke Desain Bawaan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         MODAL LOGIN ADMIN
+    ====================================================================== -->
+    <div id="login-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-fade-in">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-3 border border-amber-500/30">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h2 class="text-xl font-extrabold text-white">Login Penjual / Admin</h2>
+                <p class="text-xs text-slate-400 mt-1">Kelola foto katalog jersey, harga, dan pengaturan toko</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label for="admin-login-password" class="block text-xs font-semibold text-slate-300 mb-1.5">Password Admin</label>
+                    <div class="relative">
+                        <input type="password" id="admin-login-password" required placeholder="Masukkan password..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 pr-10">
+                        <button type="button" onclick="toggleLoginPasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                            <i id="login-eye-icon" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Petunjuk Password Default -->
+                <div class="bg-slate-800/70 border border-slate-700/80 rounded-xl p-3 text-xs text-slate-300 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-info text-emerald-400 mt-0.5"></i>
+                    <div>
+                        <span class="font-semibold text-white">Info Akses Pertama:</span> Password default adalah <code class="px-1.5 py-0.5 rounded bg-slate-950 text-emerald-400 font-bold">admin123</code>. Anda dapat menggantinya setelah masuk di menu <em>Ganti Password</em>.
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-extrabold text-sm transition-all shadow-lg shadow-emerald-500/20">
+                    Masuk ke Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL TAMBAH / EDIT PRODUK JERSEY (ADMIN)
+    ====================================================================== -->
+    <div id="product-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative my-8">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 id="product-modal-title" class="text-xl font-extrabold text-white mb-1">Tambah Desain Jersey Baru</h2>
+            <p class="text-xs text-slate-400 mb-5">Unggah foto desain jersey dan tentukan harga per pcs</p>
+
+            <form id="product-form" onsubmit="handleSaveProduct(event)" class="space-y-4">
+                <input type="hidden" id="edit-product-id">
+
+                <!-- Upload Foto Produk & Preview -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Foto Desain Jersey</label>
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-950 p-3.5 rounded-xl border border-dashed border-slate-700">
+                        <img id="modal-image-preview" src="" alt="Preview" class="w-24 h-24 rounded-xl object-cover bg-slate-800 border border-slate-700 flex-shrink-0">
+                        <div class="flex-1 w-full text-center sm:text-left">
+                            <label for="product-image-file" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold cursor-pointer border border-slate-600 transition-all">
+                                <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i>
+                                <span>Pilih Foto dari Perangkat</span>
+                            </label>
+                            <input type="file" id="product-image-file" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
+                            <p class="text-[11px] text-slate-400 mt-1.5">Format JPG, PNG, WebP. Otomatis dikompres agar ringan & tersimpan.</p>
                         </div>
                     </div>
                 </div>
-                <p id="changePassError" class="hidden text-[11px] text-red-400"></p>
-                <div class="pt-3 flex gap-2.5">
-                    <button type="button" onclick="closeChangePasswordModal()" class="flex-1 py-2.5 bg-zinc-900 text-zinc-300 font-semibold rounded-full text-xs">Batal</button>
-                    <button type="submit" class="flex-1 py-2.5 gold-btn font-bold rounded-full text-xs uppercase tracking-wider">Simpan</button>
+
+                <!-- Nama Jersey -->
+                <div>
+                    <label for="product-name" class="block text-xs font-semibold text-slate-300 mb-1.5">Nama Desain Jersey *</label>
+                    <input type="text" id="product-name" required placeholder="Cth: Garuda Thunder Pro Edition" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <!-- Kategori & Harga -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="product-category" class="block text-xs font-semibold text-slate-300 mb-1.5">Kategori *</label>
+                        <select id="product-category" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                            <option value="Futsal / Sepak Bola">Futsal / Sepak Bola</option>
+                            <option value="Esports / Gaming">Esports / Gaming</option>
+                            <option value="Basket / Voli">Basket / Voli</option>
+                            <option value="Lari / Sepeda">Lari / Sepeda</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="product-price" class="block text-xs font-semibold text-slate-300 mb-1.5">Harga Satuan (Rp) *</label>
+                        <input type="number" id="product-price" required min="1000" step="500" placeholder="135000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <!-- Deskripsi Singkat -->
+                <div>
+                    <label for="product-desc" class="block text-xs font-semibold text-slate-300 mb-1.5">Deskripsi Bahan & Detail *</label>
+                    <textarea id="product-desc" rows="2" required placeholder="Cth: Bahan Dryfit Milano anti-UV, full printing sublimasi, gratis custom nama & nomor punggung." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2.5 pt-2">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-navy-950 font-extrabold text-sm shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-check mr-1.5"></i>Simpan Produk
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-// ... existing code ... -->
-        // --- 2. STATE & KONFIGURASI ---
-        let isAdminAuthenticated = false;
-        let adminPassword = "admin123";
-        let selectedCategory = 'Semua';
-        let activeProduct = null;
-        let productToDeleteId = null;
-        let sellerWhatsApp = "6281234567890";
+    <!-- =====================================================================
+         MODAL KONFIRMASI HAPUS / RESET (PENGGANTI confirm())
+    ====================================================================== -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+            </div>
+            <h3 id="confirm-modal-title" class="text-lg font-bold text-white mb-1">Konfirmasi Tindakan</h3>
+            <p id="confirm-modal-desc" class="text-xs text-slate-400 mb-6">Apakah Anda yakin ingin melanjutkan?</p>
+            <div class="flex gap-3">
+                <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm">Batal</button>
+                <button id="confirm-modal-action" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
 
-        // --- 3. LOGIKA KALKULASI OPTIMASI DP ---
-        function getDpRule(qty) {
-            if (qty <= 0) return { dp: 0, label: "Minimal 1 pcs" };
-            if (qty >= 1 && qty <= 2) {
-                return { dp: 50000, label: "Order 1 – 2 Pcs" };
-            } else if (qty >= 3 && qty <= 5) {
-                return { dp: 100000, label: "Order 3 – 5 Pcs" };
-            } else if (qty >= 6 && qty <= 12) {
-                return { dp: 250000, label: "Order 6 – 12 Pcs" };
-            } else if (qty >= 13 && qty <= 24) {
-                return { dp: 300000, label: "Order 13 – 24 Pcs" };
-            } else if (qty >= 25 && qty <= 50) {
-                return { dp: 500000, label: "Order 25 – 50 Pcs" };
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-navy-950 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
+            <p>&copy; 2026 <strong class="text-slate-300">ProJersey Studio</strong>. Katalog Custom & Kalkulator DP Otomatis.</p>
+            <p>Produksi Cepat &bull; Full Sublimasi &bull; Garansi Kualitas</p>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         JAVASCRIPT LOGIC (STATE, KATALOG, KALKULATOR DP, ADMIN & STORAGE)
+    ====================================================================== -->
+    <script>
+        /**
+         * Helper untuk membuat ilustrasi SVG jersey berkualitas tinggi sebagai foto default
+         * sehingga tidak bergantung pada link eksternal yang bisa rusak.
+         */
+        function createJerseySVG(primaryColor, secondaryColor, accentColor, patternType, badgeText) {
+            let patternSVG = '';
+            if (patternType === 'stripes') {
+                patternSVG = `
+                    <rect x="85" y="45" width="16" height="190" fill="${secondaryColor}" opacity="0.85"/>
+                    <rect x="117" y="45" width="16" height="190" fill="${secondaryColor}" opacity="0.85"/>
+                    <rect x="149" y="45" width="16" height="190" fill="${secondaryColor}" opacity="0.85"/>
+                `;
+            } else if (patternType === 'chevron') {
+                patternSVG = `
+                    <polygon points="70,95 125,135 180,95 180,120 125,160 70,120" fill="${secondaryColor}" opacity="0.9"/>
+                    <polygon points="70,135 125,175 180,135 180,152 125,192 70,152" fill="${accentColor}" opacity="0.85"/>
+                `;
+            } else if (patternType === 'slash') {
+                patternSVG = `
+                    <polygon points="65,170 185,65 185,115 65,220" fill="${secondaryColor}" opacity="0.85"/>
+                    <polygon points="65,205 185,100 185,120 65,225" fill="${accentColor}" opacity="0.9"/>
+                `;
             } else {
-                return { dp: 1000000, label: "Order 51 – 100+ Pcs" };
+                patternSVG = `
+                    <circle cx="125" cy="130" r="55" fill="none" stroke="${secondaryColor}" stroke-width="10" opacity="0.4"/>
+                    <polygon points="125,65 165,130 125,195 85,130" fill="${secondaryColor}" opacity="0.45"/>
+                `;
+            }
+
+            const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250" width="500" height="500">
+                <defs>
+                    <linearGradient id="bgGrad_${badgeText}" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0f172a"/>
+                        <stop offset="100%" stop-color="#1e293b"/>
+                    </linearGradient>
+                    <clipPath id="jerseyClip_${badgeText}">
+                        <path d="M85,42 L105,36 C115,48 135,48 145,36 L165,42 L215,78 L195,112 L175,98 L175,225 L75,225 L75,98 L55,112 L35,78 Z"/>
+                    </clipPath>
+                </defs>
+                <rect width="250" height="250" fill="url(#bgGrad_${badgeText})"/>
+                <!-- Shadow -->
+                <ellipse cx="125" cy="233" rx="65" ry="7" fill="#000000" opacity="0.45"/>
+                <!-- Jersey Base -->
+                <g clip-path="url(#jerseyClip_${badgeText})">
+                    <rect x="30" y="30" width="190" height="205" fill="${primaryColor}"/>
+                    ${patternSVG}
+                    <!-- Sleeve Cuffs -->
+                    <rect x="30" y="70" width="45" height="45" fill="${secondaryColor}" opacity="0.5"/>
+                    <rect x="175" y="70" width="45" height="45" fill="${secondaryColor}" opacity="0.5"/>
+                </g>
+                <!-- Collar -->
+                <path d="M103,37 C115,52 135,52 147,37 L142,45 C132,57 118,57 108,45 Z" fill="${accentColor}"/>
+                <!-- Chest Logo & Number -->
+                <circle cx="148" cy="84" r="9" fill="${accentColor}"/>
+                <text x="148" y="87" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#0f172a" text-anchor="middle">PRO</text>
+                <text x="103" y="88" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#ffffff" text-anchor="middle" opacity="0.9">${badgeText}</text>
+            </svg>`;
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.trim());
+        }
+
+        // Data Produk Default
+        const DEFAULT_PRODUCTS = [
+            {
+                id: 'prod-1',
+                name: 'Garuda Emerald Striker',
+                category: 'Futsal / Sepak Bola',
+                price: 135000,
+                description: 'Bahan Dryfit Milano premium, motif chevron modern, full sublimasi anti luntur, gratis custom nama & nomor.',
+                image: createJerseySVG('#059669', '#064e3b', '#fbbf24', 'chevron', '10')
+            },
+            {
+                id: 'prod-2',
+                name: 'Cyber Phoenix Esports Pro',
+                category: 'Esports / Gaming',
+                price: 145000,
+                description: 'Kerah V-Neck sporty, bahan Brazil emboss adem untuk turnamen berjam-jam, bebas pasang logo sponsor tim.',
+                image: createJerseySVG('#1e293b', '#f97316', '#38bdf8', 'slash', '01')
+            },
+            {
+                id: 'prod-3',
+                name: 'Royal Navy Classic Stripes',
+                category: 'Futsal / Sepak Bola',
+                price: 130000,
+                description: 'Desain garis vertikal klasik elegan, jahitan rantai standar distro olahraga, menyerap keringat dengan cepat.',
+                image: createJerseySVG('#1d4ed8', '#0f172a', '#34d399', 'stripes', '07')
+            },
+            {
+                id: 'prod-4',
+                name: 'Crimson Slam Hoops Edition',
+                category: 'Basket / Voli',
+                price: 140000,
+                description: 'Bahan Dryfit Benzema berpori besar, potongan ergonomis bebas bergerak untuk tim voli maupun basket.',
+                image: createJerseySVG('#be123c', '#4c0519', '#fde047', 'diamond', '23')
+            },
+            {
+                id: 'prod-5',
+                name: 'Volt Runner Aero Series',
+                category: 'Lari / Sepeda',
+                price: 125000,
+                description: 'Super ringan (ultralight) khusus komunitas lari dan gowes, warna neon cerah dan visibilitas tinggi.',
+                image: createJerseySVG('#0f766e', '#115e59', '#a3e635', 'slash', '88')
+            },
+            {
+                id: 'prod-6',
+                name: 'Obsidian Gold Championship',
+                category: 'Esports / Gaming',
+                price: 150000,
+                description: 'Edisi eksklusif hitam pekat dengan aksen emas mewah, cocok untuk jersey official manajemen & pemain.',
+                image: createJerseySVG('#18181b', '#eab308', '#f8fafc', 'chevron', '99')
+            }
+        ];
+
+        // State Aplikasi
+        const STORAGE_KEYS = {
+            PRODUCTS: 'projersey_products_v1',
+            PASSWORD: 'projersey_admin_pass_v1',
+            WA_NUMBER: 'projersey_store_wa_v1',
+            ADMIN_SESSION: 'projersey_admin_logged_in_v1'
+        };
+
+        let products = [];
+        let selectedProductId = null;
+        let currentCategoryFilter = 'Semua';
+        let isAdminLoggedIn = false;
+        let tempUploadedImageBase64 = '';
+
+        // =====================================================================
+        // INISIALISASI APLIKASI
+        // =====================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAppState();
+            renderCatalog();
+            populateProductDropdown();
+            if (products.length > 0) {
+                selectProductById(products[0].id);
+            }
+            recalculateDP();
+            updateAdminNavUI();
+        });
+
+        function loadAppState() {
+            // Load Produk
+            const savedProducts = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
+            if (savedProducts) {
+                try {
+                    products = JSON.parse(savedProducts);
+                } catch (e) {
+                    products = [...DEFAULT_PRODUCTS];
+                }
+            } else {
+                products = [...DEFAULT_PRODUCTS];
+                saveProductsToStorage();
+            }
+
+            // Set Password Default jika belum ada
+            if (!localStorage.getItem(STORAGE_KEYS.PASSWORD)) {
+                localStorage.setItem(STORAGE_KEYS.PASSWORD, 'admin123');
+            }
+
+            // Set Nomor WA Default jika belum ada
+            if (!localStorage.getItem(STORAGE_KEYS.WA_NUMBER)) {
+                localStorage.setItem(STORAGE_KEYS.WA_NUMBER, '6281234567890');
+            }
+
+            // Cek sesi login admin
+            isAdminLoggedIn = sessionStorage.getItem(STORAGE_KEYS.ADMIN_SESSION) === 'true';
+        }
+
+        function saveProductsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+            } catch (e) {
+                showToast('Penyimpanan browser penuh! Gunakan gambar dengan ukuran lebih kecil.', 'error');
             }
         }
 
+        // =====================================================================
+        // FORMATTER & NOTIFIKASI TOAST
+        // =====================================================================
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
-                minimumFractionDigits: 0
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             }).format(angka);
         }
 
-        // --- 4. RENDER KATALOG KHUSUS ADMIN ---
-        function renderCatalog() {
-            const grid = document.getElementById('catalogGrid');
-            const emptyState = document.getElementById('emptyState');
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            const statTotal = document.getElementById('statTotalProducts');
-            if (statTotal) statTotal.textContent = products.length;
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-slate-900 border-emerald-500 text-white',
+                error: 'bg-slate-900 border-rose-500 text-white',
+                info: 'bg-slate-900 border-amber-500 text-white'
+            };
+            const icons = {
+                success: '<i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>',
+                error: '<i class="fa-solid fa-circle-exclamation text-rose-400 text-lg"></i>',
+                info: '<i class="fa-solid fa-circle-info text-amber-400 text-lg"></i>'
+            };
 
-            const filtered = products.filter(p => {
-                const matchCat = selectedCategory === 'Semua' || p.category === selectedCategory;
-                const matchSearch = p.name.toLowerCase().includes(searchQuery) || p.code.toLowerCase().includes(searchQuery);
-                return matchCat && matchSearch;
-            });
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border-l-4 shadow-2xl transition-all duration-300 transform translate-x-0 ${colors[type] || colors.success}`;
+            toast.innerHTML = `
+                ${icons[type] || icons.success}
+                <p class="text-xs sm:text-sm font-medium flex-1">${message}</p>
+            `;
 
-            grid.innerHTML = '';
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
 
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
+        // =====================================================================
+        // LOGIKA KALKULATOR DP OTOMATIS (INTI ATURAN BISNIS)
+        // =====================================================================
+        /**
+         * Menghitung DP berdasarkan aturan tier:
+         * 1 - 2 pcs   : Rp 50.000
+         * 3 - 5 pcs   : Rp 100.000
+         * 6 - 12 pcs  : Rp 250.000
+         * 13 - 24 pcs : Rp 300.000
+         * 25 - 50 pcs : Rp 500.000
+         * 51 - 100 pcs: Rp 1.000.000
+         * > 100 pcs   : Kelipatan Rp 1.000.000 per 100 pcs (atau info hubungi admin)
+         */
+        function calculateDPTier(qty) {
+            if (qty <= 0) {
+                return { dp: 0, tierKey: '', label: 'Masukkan jumlah valid', isCustomLarge: false };
             }
-
-            filtered.forEach(product => {
-                const card = document.createElement('div');
-                card.className = "group bg-surface rounded-3xl border border-white/[0.07] hover:border-amber-400/40 overflow-hidden transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7)]";
-
-                card.innerHTML = `
-                    <div>
-                        <div class="relative aspect-[4/4.5] bg-zinc-950 overflow-hidden">
-                            <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/400x460/18181b/a1a1aa?text=Jersey+Design'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
-                            <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/30 opacity-80"></div>
-                            <span class="absolute top-3.5 left-3.5 px-3 py-1 bg-black/70 backdrop-blur-md border border-white/10 text-amber-300 text-[10px] font-bold tracking-widest rounded-full">
-                                ${product.code}
-                            </span>
-                            <span class="absolute top-3.5 right-3.5 px-3 py-1 bg-zinc-900/80 backdrop-blur-md border border-white/10 text-zinc-300 text-[10px] font-medium rounded-full">
-                                ${product.category}
-                            </span>
-                        </div>
-                        <div class="p-5 pt-3">
-                            <h3 class="font-serif font-bold text-white text-lg leading-snug group-hover:text-amber-300 transition-colors">${product.name}</h3>
-                            <p class="text-xs text-zinc-400 mt-1 flex items-center gap-1.5">
-                                <i class="fa-solid fa-layer-group text-[10px] text-amber-400/70"></i> ${product.material}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="px-5 pb-5 pt-3 border-t border-white/[0.06]">
-                        <div class="flex items-baseline justify-between mb-3.5">
-                            <span class="text-[10px] uppercase tracking-wider text-zinc-500">Harga Satuan</span>
-                            <span class="text-lg font-bold text-white">${formatRupiah(product.price)}</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="openProductModal(${product.id})" class="py-2.5 px-3 bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/30 text-amber-300 font-semibold rounded-full text-[11px] flex items-center justify-center gap-1.5 transition-colors">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit / Foto
-                            </button>
-                            <button onclick="openCalculator(${product.id})" class="py-2.5 px-3 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-200 font-semibold rounded-full text-[11px] flex items-center justify-center gap-1.5 transition-colors">
-                                <i class="fa-solid fa-calculator text-amber-400"></i> Hitung DP
-                            </button>
-                        </div>
-                        <button onclick="promptDelete(${product.id})" class="w-full mt-2 py-1.5 text-[11px] text-zinc-500 hover:text-red-400 transition-colors flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-trash-can text-[10px]"></i> Hapus Desain
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // --- 5. KEAMANAN LOGIN & PENGATURAN ADMIN ---
-        function verifyAdminPassword(event) {
-            event.preventDefault();
-            const inputVal = document.getElementById('adminPasswordInput').value;
-            const errorMsg = document.getElementById('loginErrorMsg');
-
-            if (inputVal === adminPassword) {
-                isAdminAuthenticated = true;
-                errorMsg.classList.add('hidden');
-                document.getElementById('adminGateScreen').classList.add('hidden');
-                renderCatalog();
-                showToast("Otorisasi berhasil! Selamat datang di Studio Admin.", "success");
-            } else {
-                errorMsg.classList.remove('hidden');
-                document.getElementById('adminPasswordInput').value = '';
-                document.getElementById('adminPasswordInput').focus();
-            }
-        }
-
-        function logoutAdmin() {
-            isAdminAuthenticated = false;
-            document.getElementById('adminPasswordInput').value = '';
-            document.getElementById('loginErrorMsg').classList.add('hidden');
-            document.getElementById('adminGateScreen').classList.remove('hidden');
-            setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
-            showToast("Sesi Admin telah dikunci.", "info");
-        }
-
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-regular fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-regular fa-eye';
-            }
-        }
-
-        function openChangePasswordModal() {
-            if (!isAdminAuthenticated) return;
-            document.getElementById('adminWaInput').value = sellerWhatsApp;
-            document.getElementById('oldPasswordInput').value = '';
-            document.getElementById('newPasswordInput').value = '';
-            document.getElementById('changePassError').classList.add('hidden');
-            document.getElementById('changePasswordModal').classList.remove('hidden');
-        }
-
-        function closeChangePasswordModal() {
-            document.getElementById('changePasswordModal').classList.add('hidden');
-        }
-
-        function saveAdminSettings(event) {
-            event.preventDefault();
-            const waVal = document.getElementById('adminWaInput').value.trim().replace(/[^0-9]/g, '');
-            const oldPass = document.getElementById('oldPasswordInput').value;
-            const newPass = document.getElementById('newPasswordInput').value.trim();
-            const errEl = document.getElementById('changePassError');
-
-            if (waVal) {
-                sellerWhatsApp = waVal;
-            }
-
-            if (oldPass || newPass) {
-                if (oldPass !== adminPassword) {
-                    errEl.textContent = "Kata sandi lama tidak sesuai.";
-                    errEl.classList.remove('hidden');
-                    return;
-                }
-                if (newPass.length < 4) {
-                    errEl.textContent = "Kata sandi baru minimal 4 karakter.";
-                    errEl.classList.remove('hidden');
-                    return;
-                }
-                adminPassword = newPass;
-            }
-
-            closeChangePasswordModal();
-            showToast("Pengaturan Studio Admin berhasil disimpan!");
-        }
-
-            const svg = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="400" height="460">
-                <defs>
-                    <radialGradient id="studioBg_${numberText}" cx="50%" cy="40%" r="70%">
-                        <stop offset="0%" stop-color="#27272a"/>
-                        <stop offset="100%" stop-color="#09090b"/>
-                    </radialGradient>
-                    <clipPath id="jerseyClip_${numberText}">
-                        <path d="M145,65 L255,65 L345,115 L315,180 L285,160 L285,375 L115,375 L115,160 L85,180 L55,115 Z"/>
-                    </clipPath>
-                </defs>
-                <rect width="400" height="460" fill="url(#studioBg_${numberText})"/>
-                <!-- Subtle Spotlight Glow -->
-                <ellipse cx="200" cy="220" rx="140" ry="160" fill="${accentColor}" opacity="0.06"/>
-                <ellipse cx="200" cy="405" rx="90" ry="12" fill="#000000" opacity="0.6"/>
-                <!-- Jersey Base -->
-                <g clip-path="url(#jerseyClip_${numberText})">
-                    <rect x="50" y="60" width="300" height="330" fill="${primaryColor}"/>
-                    ${patternMarkup}
-                    <rect x="50" y="155" width="65" height="22" transform="rotate(28 80 165)" fill="${accentColor}"/>
-                    <rect x="285" y="155" width="65" height="22" transform="rotate(-28 320 165)" fill="${accentColor}"/>
-                </g>
-                <!-- Tailored Stitching & Collar -->
-                <path d="M145,65 L255,65 L345,115 L315,180 L285,160 L285,375 L115,375 L115,160 L85,180 L55,115 Z" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M155,65 Q200,105 245,65" fill="none" stroke="${accentColor}" stroke-width="7" stroke-linecap="round"/>
-                <!-- Crest & Number -->
-                <circle cx="236" cy="135" r="11" fill="${accentColor}" stroke="#09090b" stroke-width="2"/>
-                <text x="200" y="248" font-family="Georgia, serif" font-weight="700" font-size="62" fill="#ffffff" text-anchor="middle" letter-spacing="2">${numberText}</text>
-                <text x="200" y="438" font-family="Arial, sans-serif" font-weight="600" font-size="10" fill="#71717a" text-anchor="middle" letter-spacing="4">ATELIER BESPOKE EDITION</text>
-            </svg>`;
-            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-        }
-
-        let products = [
-            {
-                id: 1,
-                code: "ATL-01",
-                name: "Sovereign Noir & Gold",
-                category: "Futsal / Bola",
-                price: 145000,
-                material: "Dryfit Milano Silk UV",
-                image: createJerseySvg("#18181b", "#09090b", "#d4af37", "slash", "10")
-            },
-            {
-                id: 2,
-                code: "ATL-02",
-                name: "Royal Midnight Striker",
-                category: "Futsal / Bola",
-                price: 140000,
-                material: "Dryfit Benzema Pro",
-                image: createJerseySvg("#172554", "#0f172a", "#fbbf24", "stripes", "07")
-            },
-            {
-                id: 3,
-                code: "ATL-03",
-                name: "Imperial Crimson V",
-                category: "Esports",
-                price: 155000,
-                material: "Dryfit Jarum Micro-Mesh",
-                image: createJerseySvg("#4c0519", "#18181b", "#f59e0b", "chevron", "09")
-            },
-            {
-                id: 4,
-                code: "ATL-04",
-                name: "Emerald Crown Edition",
-                category: "Basket / Voli",
-                price: 150000,
-                material: "Dryfit Milano Premium",
-                image: createJerseySvg("#064e3b", "#022c22", "#fde047", "geometric", "23")
-            },
-            {
-                id: 5,
-                code: "ATL-05",
-                name: "Phantom Stealth Esports",
-                category: "Esports",
-                price: 160000,
-                material: "Dryfit Aero-Cool",
-                image: createJerseySvg("#27272a", "#18181b", "#e4e4e7", "chevron", "99")
-            },
-            {
-                id: 6,
-                code: "ATL-06",
-                name: "Aurum Peloton Aero",
-                category: "Sepeda / Lari",
-                price: 145000,
-                material: "Ultra-Light Microfiber",
-                image: createJerseySvg("#1e1b4b", "#09090b", "#d4af37", "slash", "01")
-            }
-        ];
-
-        // --- 2. STATE & KONFIGURASI ---
-        let currentMode = 'buyer';
-        let isAdminAuthenticated = false;
-        let adminPassword = "admin123";
-        let selectedCategory = 'Semua';
-        let activeProduct = null;
-        let productToDeleteId = null;
-        const sellerWhatsApp = "6281234567890";
-
-        // --- 3. LOGIKA KALKULASI OPTIMASI DP ---
-        function getDpRule(qty) {
-            if (qty <= 0) return { dp: 0, label: "Minimal 1 pcs" };
             if (qty >= 1 && qty <= 2) {
-                return { dp: 50000, label: "Order 1 – 2 Pcs" };
-            } else if (qty >= 3 && qty <= 5) {
-                return { dp: 100000, label: "Order 3 – 5 Pcs" };
-            } else if (qty >= 6 && qty <= 12) {
-                return { dp: 250000, label: "Order 6 – 12 Pcs" };
-            } else if (qty >= 13 && qty <= 24) {
-                return { dp: 300000, label: "Order 13 – 24 Pcs" };
-        // --- 5. MODE SWITCHER & KEAMANAN ADMIN ---
-        function requestSellerAccess() {
-            if (isAdminAuthenticated) {
-                switchMode('seller');
+                return { dp: 50000, tierKey: '1-2', label: 'Tier 1 – 2 pcs', isCustomLarge: false };
+            }
+            if (qty >= 3 && qty <= 5) {
+                return { dp: 100000, tierKey: '3-5', label: 'Tier 3 – 5 pcs', isCustomLarge: false };
+            }
+            if (qty >= 6 && qty <= 12) {
+                return { dp: 250000, tierKey: '6-12', label: 'Tier 6 – 12 pcs', isCustomLarge: false };
+            }
+            if (qty >= 13 && qty <= 24) {
+                return { dp: 300000, tierKey: '13-24', label: 'Tier 13 – 24 pcs', isCustomLarge: false };
+            }
+            if (qty >= 25 && qty <= 50) {
+                return { dp: 500000, tierKey: '25-50', label: 'Tier 25 – 50 pcs', isCustomLarge: false };
+            }
+            if (qty >= 51 && qty <= 100) {
+                return { dp: 1000000, tierKey: '51-100', label: 'Tier 51 – 100 pcs', isCustomLarge: false };
+            }
+            // Jika > 100 pcs: hitung kelipatan 100 pcs atau sisa tier-nya
+            const hundreds = Math.floor(qty / 100);
+            const remainder = qty % 100;
+            const remainderDP = remainder > 0 ? calculateDPTier(remainder).dp : 0;
+            const totalLargeDP = (hundreds * 1000000) + remainderDP;
+            return {
+                dp: totalLargeDP,
+                tierKey: '100+',
+                label: 'Partai Besar (> 100 pcs)',
+                isCustomLarge: true
+            };
+        }
+
+        function recalculateDP() {
+            const qtyInput = document.getElementById('calc-qty');
+            let qty = parseInt(qtyInput.value, 10);
+            if (isNaN(qty) || qty < 1) {
+                qty = 1;
+            }
+
+            const product = products.find(p => p.id === selectedProductId) || products[0];
+            if (!product) return;
+
+            const unitPrice = product.price;
+            const totalPrice = unitPrice * qty;
+            const tierInfo = calculateDPTier(qty);
+            const remaining = Math.max(0, totalPrice - tierInfo.dp);
+
+            // Update UI Kalkulator
+            document.getElementById('active-tier-badge').textContent = tierInfo.label;
+            document.getElementById('res-qty-label').textContent = qty;
+            document.getElementById('res-total-price').textContent = formatRupiah(totalPrice);
+            document.getElementById('res-dp-amount').textContent = formatRupiah(tierInfo.dp);
+            document.getElementById('res-remaining').textContent = formatRupiah(remaining);
+
+            if (tierInfo.isCustomLarge) {
+                document.getElementById('res-dp-note').innerHTML = `Kelipatan partai besar (<span class="text-amber-400 font-semibold">Konfirmasi Admin</span>)`;
             } else {
-                document.getElementById('adminPasswordInput').value = '';
-                document.getElementById('loginErrorMsg').classList.add('hidden');
-                document.getElementById('adminLoginModal').classList.remove('hidden');
-                setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
-            }
-        }
-
-        function closeAdminLoginModal() {
-            document.getElementById('adminLoginModal').classList.add('hidden');
-        }
-
-        function verifyAdminPassword(event) {
-            event.preventDefault();
-            const inputVal = document.getElementById('adminPasswordInput').value;
-            const errorMsg = document.getElementById('loginErrorMsg');
-
-            if (inputVal === adminPassword) {
-                isAdminAuthenticated = true;
-                errorMsg.classList.add('hidden');
-                closeAdminLoginModal();
-                switchMode('seller');
-                showToast("Login berhasil! Selamat datang di Studio Admin.", "success");
-            } else {
-                errorMsg.classList.remove('hidden');
-                document.getElementById('adminPasswordInput').value = '';
-                document.getElementById('adminPasswordInput').focus();
-            }
-        }
-
-        function logoutAdmin() {
-            isAdminAuthenticated = false;
-            switchMode('buyer');
-            showToast("Sesi Admin dikunci. Kembali ke Katalog Pembeli.", "info");
-        }
-
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-regular fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-regular fa-eye';
-            }
-        }
-
-        function openChangePasswordModal() {
-            if (!isAdminAuthenticated) return;
-            document.getElementById('oldPasswordInput').value = '';
-            document.getElementById('newPasswordInput').value = '';
-            document.getElementById('changePassError').classList.add('hidden');
-            document.getElementById('changePasswordModal').classList.remove('hidden');
-        }
-
-        function closeChangePasswordModal() {
-            document.getElementById('changePasswordModal').classList.add('hidden');
-        }
-
-        function saveNewPassword(event) {
-            event.preventDefault();
-            const oldPass = document.getElementById('oldPasswordInput').value;
-            const newPass = document.getElementById('newPasswordInput').value.trim();
-            const errEl = document.getElementById('changePassError');
-
-            if (oldPass !== adminPassword) {
-                errEl.textContent = "Kata sandi lama tidak sesuai.";
-                errEl.classList.remove('hidden');
-                return;
-            }
-            if (newPass.length < 4) {
-                errEl.textContent = "Kata sandi baru minimal 4 karakter.";
-                errEl.classList.remove('hidden');
-                return;
+                document.getElementById('res-dp-note').textContent = `Sesuai ketentuan ${tierInfo.label}`;
             }
 
-            adminPassword = newPass;
-            closeChangePasswordModal();
-            showToast("Kata sandi Admin berhasil diperbarui!");
-        }
-
-        function switchMode(mode) {
-            if (mode === 'seller' && !isAdminAuthenticated) {
-                requestSellerAccess();
-                return;
-            }
-
-            currentMode = mode;
-            const btnBuyer = document.getElementById('btnModeBuyer');
-            const btnSeller = document.getElementById('btnModeSeller');
-            const sellerBanner = document.getElementById('sellerBanner');
-            const lockIcon = document.getElementById('sellerLockIcon');
-
-            lockIcon.className = isAdminAuthenticated ? "fa-solid fa-unlock text-[10px]" : "fa-solid fa-lock text-[10px]";
-
-            if (mode === 'buyer') {
-                btnBuyer.className = "px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all bg-amber-400 text-zinc-950 shadow-md";
-                btnSeller.className = "px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all flex items-center gap-1.5";
-                sellerBanner.classList.add('hidden');
-            } else {
-                btnSeller.className = "px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all bg-amber-400 text-zinc-950 shadow-md flex items-center gap-1.5";
-                btnBuyer.className = "px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide text-zinc-400 hover:text-white transition-all";
-                sellerBanner.classList.remove('hidden');
-            }
-            renderCatalog();
-        }
-
-        function filterCategory(cat) {
-            selectedCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if (btn.textContent.trim() === cat || (cat === 'Semua' && btn.textContent.includes('Semua'))) {
-                    btn.className = "cat-btn active px-5 py-2 rounded-full text-xs font-semibold tracking-wide bg-white text-zinc-950 transition-all whitespace-nowrap shadow-sm";
+            // Highlight baris tabel DP yang sedang aktif
+            document.querySelectorAll('#dp-tier-table tr').forEach(row => {
+                if (row.dataset.tier === tierInfo.tierKey) {
+                    row.classList.add('bg-emerald-500/15');
                 } else {
-                    btn.className = "cat-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide bg-zinc-900/80 text-zinc-400 border border-white/10 hover:text-white hover:border-white/20 transition-all whitespace-nowrap";
+                    row.classList.remove('bg-emerald-500/15');
                 }
             });
-            renderCatalog();
-        }
-
-        // --- 6. KALKULATOR MODAL (PEMBELI) ---
-        function openCalculator(productId) {
-            activeProduct = products.find(p => p.id === productId);
-            if (!activeProduct) return;
-
-            document.getElementById('calcImg').src = activeProduct.image;
-            document.getElementById('calcCodeBadge').textContent = activeProduct.code;
-            document.getElementById('calcCategory').textContent = activeProduct.category;
-            document.getElementById('calcTitle').textContent = activeProduct.name;
-            document.getElementById('calcMaterial').textContent = `Material: ${activeProduct.material}`;
-            document.getElementById('calcUnitPrice').textContent = formatRupiah(activeProduct.price);
-            
-            document.getElementById('orderQty').value = 12;
-            document.getElementById('orderNotes').value = '';
-            
-            calculateDP();
-            document.getElementById('calculatorModal').classList.remove('hidden');
-        }
-
-        function closeCalculatorModal() {
-            document.getElementById('calculatorModal').classList.add('hidden');
         }
 
         function adjustQty(delta) {
-            const input = document.getElementById('orderQty');
-            let val = parseInt(input.value) || 1;
-            val = Math.max(1, val + delta);
-            input.value = val;
-            calculateDP();
+            const input = document.getElementById('calc-qty');
+            const current = parseInt(input.value, 10) || 1;
+            const next = Math.max(1, current + delta);
+            input.value = next;
+            recalculateDP();
         }
 
         function setQty(val) {
-            document.getElementById('orderQty').value = val;
-            calculateDP();
+            document.getElementById('calc-qty').value = val;
+            recalculateDP();
         }
 
-        function calculateDP() {
-            if (!activeProduct) return;
-            const qtyInput = document.getElementById('orderQty');
-            let qty = parseInt(qtyInput.value);
-            if (isNaN(qty) || qty < 1) qty = 1;
-
-            const totalPrice = activeProduct.price * qty;
-            const dpRule = getDpRule(qty);
-            
-            const finalDp = Math.min(dpRule.dp, totalPrice);
-            const remaining = Math.max(0, totalPrice - finalDp);
-            const percentage = totalPrice > 0 ? Math.round((finalDp / totalPrice) * 100) : 0;
-
-            document.getElementById('dpTierBadge').textContent = `Skema: ${dpRule.label}`;
-            document.getElementById('dpPercentageInfo').textContent = `± ${percentage}% dari Total`;
-            document.getElementById('resTotalPrice').textContent = formatRupiah(totalPrice);
-            document.getElementById('resDpAmount').textContent = formatRupiah(finalDp);
-            document.getElementById('resRemaining').textContent = formatRupiah(remaining);
+        // =====================================================================
+        // RENDER KATALOG PEMBELI & INTERAKSI PILIH PRODUK
+        // =====================================================================
+        function filterCategory(category) {
+            currentCategoryFilter = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.textContent.includes(category) || (category === 'Semua' && btn.textContent.includes('Semua'))) {
+                    btn.className = 'cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500 text-navy-950 transition-all whitespace-nowrap';
+                } else {
+                    btn.className = 'cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all whitespace-nowrap';
+                }
+            });
+            renderCatalog();
         }
 
-        function generateOrderText() {
-            const qty = parseInt(document.getElementById('orderQty').value) || 1;
-            const totalPrice = activeProduct.price * qty;
-            const dpRule = getDpRule(qty);
-            const finalDp = Math.min(dpRule.dp, totalPrice);
-            const remaining = Math.max(0, totalPrice - finalDp);
-            const notes = document.getElementById('orderNotes').value.trim();
+        function renderCatalog() {
+            const grid = document.getElementById('catalog-grid');
+            const filtered = currentCategoryFilter === 'Semua'
+                ? products
+                : products.filter(p => p.category === currentCategoryFilter);
 
-            return `Halo *Atelier Jersey Studio*, saya ingin memesan koleksi berikut:\n\n` +
-                   `• *Desain:* ${activeProduct.name} (${activeProduct.code})\n` +
-                   `• *Kategori:* ${activeProduct.category}\n` +
-                   `• *Harga Satuan:* ${formatRupiah(activeProduct.price)}\n` +
-                   `• *Kuantitas:* ${qty} pcs (${dpRule.label})\n` +
-                   `• *Total Nilai:* ${formatRupiah(totalPrice)}\n` +
-                   `• *Optimasi DP Awal:* *${formatRupiah(finalDp)}*\n` +
-                   `• *Sisa Pelunasan:* ${formatRupiah(remaining)}\n` +
-                   (notes ? `• *Catatan Kustom:* ${notes}\n` : '') +
-                   `\nMohon informasi rekening pembayaran DP untuk memulai proses produksi. Terima kasih.`;
-        }
+            document.getElementById('product-count').textContent = filtered.length;
 
-        function copyOrderSummary() {
-            const text = generateOrderText();
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showToast("Rincian simulasi DP berhasil disalin!");
-            } catch (err) {
-                showToast("Gagal menyalin rincian.", "error");
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full glass-card rounded-2xl p-10 text-center">
+                        <i class="fa-solid fa-shirt text-4xl text-slate-600 mb-3"></i>
+                        <p class="text-slate-300 font-semibold">Belum ada desain jersey di kategori ini.</p>
+                    </div>
+                `;
+                return;
             }
-            document.body.removeChild(textArea);
+
+            grid.innerHTML = filtered.map(prod => {
+                const isSelected = prod.id === selectedProductId;
+                return `
+                <div onclick="selectProductById('${prod.id}', true)" 
+                     class="group cursor-pointer rounded-2xl overflow-hidden bg-slate-900/90 border transition-all duration-200 flex flex-col justify-between ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/30 shadow-xl shadow-emerald-500/10' : 'border-slate-800 hover:border-slate-600'}">
+                    <div>
+                        <div class="relative aspect-square bg-slate-800 overflow-hidden">
+                            <img src="${prod.image}" alt="${prod.name}" onerror="this.src='https://placehold.co/400x400/1e293b/10b981?text=Jersey'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md text-[10px] font-bold text-emerald-400 border border-slate-700/80">
+                                ${prod.category}
+                            </span>
+                            ${isSelected ? `
+                            <span class="absolute top-3 right-3 w-7 h-7 rounded-full bg-emerald-500 text-navy-950 flex items-center justify-center shadow-lg">
+                                <i class="fa-solid fa-check text-xs font-bold"></i>
+                            </span>` : ''}
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors">${prod.name}</h3>
+                            <p class="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">${prod.description}</p>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 pt-2 flex items-center justify-between border-t border-slate-800/80">
+                        <div>
+                            <span class="block text-[10px] text-slate-400">Harga Satuan</span>
+                            <span class="font-extrabold text-white text-sm">${formatRupiah(prod.price)}</span>
+                        </div>
+                        <button type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${isSelected ? 'bg-emerald-500 text-navy-950' : 'bg-slate-800 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-navy-950'}">
+                            ${isSelected ? 'Dipilih' : 'Pilih & Hitung'}
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function populateProductDropdown() {
+            const select = document.getElementById('calc-product-select');
+            select.innerHTML = products.map(p => 
+                `<option value="${p.id}">${p.name} (${formatRupiah(p.price)}/pcs)</option>`
+            ).join('');
+        }
+
+        function selectProductById(id, scrollToCalcOnMobile = false) {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+
+            selectedProductId = prod.id;
+            document.getElementById('calc-product-select').value = prod.id;
+            document.getElementById('calc-preview-img').src = prod.image;
+            document.getElementById('calc-preview-cat').textContent = prod.category;
+            document.getElementById('calc-preview-name').textContent = prod.name;
+            document.getElementById('calc-preview-price').textContent = `${formatRupiah(prod.price)} / pcs`;
+
+            renderCatalog();
+            recalculateDP();
+
+            if (scrollToCalcOnMobile && window.innerWidth < 1024) {
+                document.getElementById('calculator-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // =====================================================================
+        // CHECKOUT WHATSAPP & SALIN RINCIAN ORDER
+        // =====================================================================
+        function generateOrderText() {
+            const prod = products.find(p => p.id === selectedProductId) || products[0];
+            const qty = Math.max(1, parseInt(document.getElementById('calc-qty').value, 10) || 1);
+            const team = document.getElementById('calc-team').value.trim() || '-';
+            const sizes = document.getElementById('calc-sizes').value.trim() || '-';
+            const notes = document.getElementById('calc-notes').value.trim() || '-';
+
+            const total = prod.price * qty;
+            const tierInfo = calculateDPTier(qty);
+            const remaining = Math.max(0, total - tierInfo.dp);
+
+            return `Halo Admin ProJersey, saya ingin memesan custom jersey dengan rincian berikut:\n\n` +
+                   `• *Desain:* ${prod.name} (${prod.category})\n` +
+                   `• *Harga Satuan:* ${formatRupiah(prod.price)}\n` +
+                   `• *Jumlah Order:* ${qty} pcs\n` +
+                   `• *Nama Pemesan/Tim:* ${team}\n` +
+                   `• *Rincian Ukuran:* ${sizes}\n` +
+                   `• *Catatan:* ${notes}\n\n` +
+                   `--- *RINCIAN BIAYA & DP* ---\n` +
+                   `• *Estimasi Total:* ${formatRupiah(total)}\n` +
+                   `• *Nominal DP (${tierInfo.label}):* *${formatRupiah(tierInfo.dp)}*\n` +
+                   `• *Sisa Pelunasan:* ${formatRupiah(remaining)}\n\n` +
+                   `Mohon info nomor rekening untuk pembayaran DP. Terima kasih!`;
         }
 
         function sendToWhatsApp() {
-            const text = encodeURIComponent(generateOrderText());
-            window.open(`https://wa.me/${sellerWhatsApp}?text=${text}`, '_blank');
+            const waNumber = localStorage.getItem(STORAGE_KEYS.WA_NUMBER) || '6281234567890';
+            const text = generateOrderText();
+            const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
         }
 
-        // --- 7. KELOLA PRODUK MODAL (PENJUAL) ---
-        let uploadedBase64Image = null;
+        function copyOrderSummary() {
+            const text = generateOrderText().replace(/\*/g, '');
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Rincian pesanan & perhitungan DP berhasil disalin!');
+            } catch (err) {
+                showToast('Gagal menyalin teks.', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // =====================================================================
+        // NAVIGASI & AUTENTIKASI ADMIN
+        // =====================================================================
+        function switchView(viewName) {
+            const buyerView = document.getElementById('buyer-view');
+            const adminView = document.getElementById('admin-view');
+            const navBuyerBtn = document.getElementById('nav-buyer-btn');
+
+            if (viewName === 'buyer') {
+                buyerView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+                navBuyerBtn.className = 'px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800 text-emerald-400 border border-emerald-500/30';
+                renderCatalog();
+                populateProductDropdown();
+                if (products.length > 0 && !products.some(p => p.id === selectedProductId)) {
+                    selectProductById(products[0].id);
+                } else {
+                    recalculateDP();
+                }
+            } else if (viewName === 'admin') {
+                if (!isAdminLoggedIn) {
+                    openLoginModal();
+                    return;
+                }
+                buyerView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                navBuyerBtn.className = 'px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/60 text-slate-300 hover:bg-slate-700 border border-slate-700';
+                renderAdminProducts();
+                document.getElementById('store-wa-input').value = localStorage.getItem(STORAGE_KEYS.WA_NUMBER) || '6281234567890';
+            }
+        }
+
+        function handleAdminNavClick() {
+            if (isAdminLoggedIn) {
+                switchView('admin');
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function updateAdminNavUI() {
+            const icon = document.getElementById('nav-admin-icon');
+            const text = document.getElementById('nav-admin-text');
+            const btn = document.getElementById('nav-admin-btn');
+
+            if (isAdminLoggedIn) {
+                icon.className = 'fa-solid fa-gauge-high text-emerald-400';
+                text.textContent = 'Dashboard Admin';
+                btn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 flex items-center gap-2';
+            } else {
+                icon.className = 'fa-solid fa-lock text-amber-400';
+                text.textContent = 'Login Admin';
+                btn.className = 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2';
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('admin-login-password').value = '';
+            document.getElementById('login-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('admin-login-password').focus(), 100);
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function toggleLoginPasswordVisibility() {
+            const input = document.getElementById('admin-login-password');
+            const icon = document.getElementById('login-eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const inputPass = document.getElementById('admin-login-password').value;
+            const savedPass = localStorage.getItem(STORAGE_KEYS.PASSWORD) || 'admin123';
+
+            if (inputPass === savedPass) {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem(STORAGE_KEYS.ADMIN_SESSION, 'true');
+                closeLoginModal();
+                updateAdminNavUI();
+                switchView('admin');
+                showToast('Berhasil masuk sebagai Admin!');
+            } else {
+                showToast('Password salah! Silakan coba lagi.', 'error');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem(STORAGE_KEYS.ADMIN_SESSION);
+            updateAdminNavUI();
+            switchView('buyer');
+            showToast('Anda telah keluar dari mode Admin.', 'info');
+        }
+
+        // =====================================================================
+        // DASHBOARD ADMIN: CRUD PRODUK & UPLOAD FOTO
+        // =====================================================================
+        function switchAdminTab(tab) {
+            const prodTab = document.getElementById('admin-tab-products');
+            const settingsTab = document.getElementById('admin-tab-settings');
+            const prodBtn = document.getElementById('tab-products-btn');
+            const settingsBtn = document.getElementById('tab-settings-btn');
+
+            if (tab === 'products') {
+                prodTab.classList.remove('hidden');
+                settingsTab.classList.add('hidden');
+                settingsTab.classList.remove('grid');
+                prodBtn.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30';
+                settingsBtn.className = 'px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60';
+            } else {
+                prodTab.classList.add('hidden');
+                settingsTab.classList.remove('hidden');
+                settingsTab.classList.add('grid');
+                settingsBtn.className = 'px-4 py-2 rounded-xl text-sm font-bold bg-slate-800 text-amber-400 border border-amber-500/30';
+                prodBtn.className = 'px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60';
+            }
+        }
+
+        function renderAdminProducts() {
+            const grid = document.getElementById('admin-product-grid');
+            document.getElementById('admin-prod-count').textContent = products.length;
+
+            if (products.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full glass-card rounded-2xl p-12 text-center">
+                        <p class="text-slate-300 font-semibold mb-3">Belum ada produk jersey di katalog.</p>
+                        <button onclick="openProductModal()" class="px-4 py-2 rounded-xl bg-emerald-500 text-navy-950 font-bold text-sm">
+                            + Tambah Produk Pertama
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = products.map(prod => `
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-48 bg-slate-800">
+                            <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-950/85 text-[11px] font-bold text-emerald-400 border border-slate-700">
+                                ${prod.category}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="font-bold text-white text-base">${prod.name}</h3>
+                                <span class="font-extrabold text-emerald-400 text-sm whitespace-nowrap">${formatRupiah(prod.price)}</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1.5 line-clamp-2">${prod.description}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 flex gap-2">
+                        <button onclick="openProductModal('${prod.id}')" class="flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 transition-all">
+                            <i class="fa-solid fa-pen-to-square text-amber-400"></i> Edit & Foto
+                        </button>
+                        <button onclick="confirmDeleteProduct('${prod.id}')" class="px-3.5 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 font-semibold text-xs transition-all" title="Hapus Produk">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
         function openProductModal(productId = null) {
-            const modal = document.getElementById('productModal');
-            const title = document.getElementById('productModalTitle');
-            uploadedBase64Image = null;
-            document.getElementById('formFileInput').value = '';
+            const modal = document.getElementById('product-modal');
+            const title = document.getElementById('product-modal-title');
+            const idInput = document.getElementById('edit-product-id');
+            const nameInput = document.getElementById('product-name');
+            const catInput = document.getElementById('product-category');
+            const priceInput = document.getElementById('product-price');
+            const descInput = document.getElementById('product-desc');
+            const imgPreview = document.getElementById('modal-image-preview');
+            const fileInput = document.getElementById('product-image-file');
+
+            fileInput.value = '';
 
             if (productId) {
                 const prod = products.find(p => p.id === productId);
                 if (!prod) return;
-                title.textContent = "Edit Koleksi & Foto Jersey";
-                document.getElementById('editProductId').value = prod.id;
-                document.getElementById('formCode').value = prod.code;
-                document.getElementById('formName').value = prod.name;
-                document.getElementById('formCategory').value = prod.category;
-                document.getElementById('formPrice').value = prod.price;
-                document.getElementById('formMaterial').value = prod.material;
-                document.getElementById('formImgPreview').src = prod.image;
-                document.getElementById('formImgUrl').value = prod.image.startsWith('data:') ? '' : prod.image;
-                uploadedBase64Image = prod.image;
+                title.textContent = 'Edit Desain Jersey';
+                idInput.value = prod.id;
+                nameInput.value = prod.name;
+                catInput.value = prod.category;
+                priceInput.value = prod.price;
+                descInput.value = prod.description;
+                tempUploadedImageBase64 = prod.image;
+                imgPreview.src = prod.image;
             } else {
-                title.textContent = "Tambah Koleksi Jersey Baru";
-                document.getElementById('productForm').reset();
-                document.getElementById('editProductId').value = '';
-                document.getElementById('formCode').value = `ATL-0${products.length + 1}`;
-                document.getElementById('formImgPreview').src = 'https://placehold.co/400x500/18181b/a1a1aa?text=Upload+Foto';
+                title.textContent = 'Tambah Desain Jersey Baru';
+                idInput.value = '';
+                nameInput.value = '';
+                catInput.value = 'Futsal / Sepak Bola';
+                priceInput.value = 135000;
+                descInput.value = '';
+                tempUploadedImageBase64 = createJerseySVG('#10b981', '#0f172a', '#fbbf24', 'stripes', 'NEW');
+                imgPreview.src = tempUploadedImageBase64;
             }
 
             modal.classList.remove('hidden');
         }
 
         function closeProductModal() {
-            document.getElementById('productModal').classList.add('hidden');
+            document.getElementById('product-modal').classList.add('hidden');
         }
 
+        /**
+         * Membaca file gambar dari perangkat penjual dan otomatis mengecilkan resolusinya
+         * via Canvas agar tersimpan mulus di localStorage tanpa melebihi batas kuota.
+         */
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
+            if (!file.type.startsWith('image/')) {
+                showToast('File harus berupa gambar (JPG, PNG, WebP).', 'error');
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                uploadedBase64Image = e.target.result;
-                document.getElementById('formImgPreview').src = uploadedBase64Image;
-                document.getElementById('formImgUrl').value = '';
-                showToast("Foto berhasil dimuat ke pratinjau!");
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_SIZE = 600; // Ukuran optimal agar tajam namun hemat storage
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_SIZE) {
+                            height *= MAX_SIZE / width;
+                            width = MAX_SIZE;
+                        }
+                    } else {
+                        if (height > MAX_SIZE) {
+                            width *= MAX_SIZE / height;
+                            height = MAX_SIZE;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    tempUploadedImageBase64 = canvas.toDataURL('image/jpeg', 0.82);
+                    document.getElementById('modal-image-preview').src = tempUploadedImageBase64;
+                    showToast('Foto jersey berhasil dimuat!');
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function updatePreviewFromUrl() {
-            const url = document.getElementById('formImgUrl').value.trim();
-            if (url) {
-                uploadedBase64Image = url;
-                document.getElementById('formImgPreview').src = url;
-            }
-        }
+        function handleSaveProduct(e) {
+            e.preventDefault();
+            const editId = document.getElementById('edit-product-id').value;
+            const name = document.getElementById('product-name').value.trim();
+            const category = document.getElementById('product-category').value;
+            const price = parseInt(document.getElementById('product-price').value, 10);
+            const description = document.getElementById('product-desc').value.trim();
 
-        function saveProduct(event) {
-            event.preventDefault();
-            const idVal = document.getElementById('editProductId').value;
-            const code = document.getElementById('formCode').value.trim();
-            const name = document.getElementById('formName').value.trim();
-            const category = document.getElementById('formCategory').value;
-            const price = parseInt(document.getElementById('formPrice').value);
-            const material = document.getElementById('formMaterial').value.trim();
-            
-            let finalImage = uploadedBase64Image;
-            if (!finalImage) {
-                const luxuryPalettes = [
-                    ["#18181b", "#09090b", "#d4af37", "stripes"],
-                    ["#1e1b4b", "#0f172a", "#fbbf24", "chevron"],
-                    ["#4c0519", "#18181b", "#fde047", "slash"]
-                ];
-                const pick = luxuryPalettes[products.length % luxuryPalettes.length];
-                finalImage = createJerseySvg(pick[0], pick[1], pick[2], pick[3], String(products.length + 1).padStart(2, '0'));
+            if (!name || isNaN(price) || price <= 0) {
+                showToast('Mohon lengkapi nama dan harga jersey dengan benar.', 'error');
+                return;
             }
 
-            if (idVal) {
-                const index = products.findIndex(p => p.id === parseInt(idVal));
-                if (index !== -1) {
-                    products[index] = {
-                        ...products[index],
-                        code,
+            if (editId) {
+                // Update produk yang sudah ada
+                const idx = products.findIndex(p => p.id === editId);
+                if (idx !== -1) {
+                    products[idx] = {
+                        ...products[idx],
                         name,
                         category,
                         price,
-                        material,
-                        image: finalImage
+                        description,
+                        image: tempUploadedImageBase64
                     };
-                    showToast("Koleksi & foto berhasil diperbarui!");
+                    showToast(`Desain "${name}" berhasil diperbarui!`);
                 }
             } else {
-                const newProduct = {
-                    id: Date.now(),
-                    code,
+                // Tambah produk baru di urutan teratas
+                const newProd = {
+                    id: 'prod-' + Date.now(),
                     name,
                     category,
                     price,
-                    material,
-                    image: finalImage
+                    description,
+                    image: tempUploadedImageBase64
                 };
-                products.unshift(newProduct);
-                showToast("Koleksi baru berhasil ditambahkan ke etalase!");
+                products.unshift(newProd);
+                selectedProductId = newProd.id;
+                showToast(`Desain baru "${name}" berhasil ditambahkan ke katalog!`);
             }
 
-            closeProductModal();
+            saveProductsToStorage();
+            renderAdminProducts();
             renderCatalog();
+            populateProductDropdown();
+            if (selectedProductId) {
+                selectProductById(selectedProductId);
+            }
+            closeProductModal();
         }
 
-        // --- 8. DELETE PRODUCT ---
-        function promptDelete(id) {
-            productToDeleteId = id;
-            document.getElementById('deleteModal').classList.remove('hidden');
-            document.getElementById('confirmDeleteBtn').onclick = function() {
-                products = products.filter(p => p.id !== productToDeleteId);
-                closeDeleteModal();
-                renderCatalog();
-                showToast("Koleksi berhasil dihapus dari etalase.");
-            };
+        // =====================================================================
+        // KONFIRMASI HAPUS & RESET (CUSTOM MODAL)
+        // =====================================================================
+        let pendingConfirmAction = null;
+
+        function openConfirmModal(title, desc, actionFn) {
+            document.getElementById('confirm-modal-title').textContent = title;
+            document.getElementById('confirm-modal-desc').textContent = desc;
+            pendingConfirmAction = actionFn;
+            document.getElementById('confirm-modal').classList.remove('hidden');
         }
 
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
-            productToDeleteId = null;
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            pendingConfirmAction = null;
         }
 
-        // --- 9. TOAST NOTIFICATION ---
-        let toastTimeout;
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
+        document.getElementById('confirm-modal-action').addEventListener('click', () => {
+            if (typeof pendingConfirmAction === 'function') {
+                pendingConfirmAction();
+            }
+            closeConfirmModal();
+        });
 
-            toastMsg.textContent = message;
-            if (type === 'error') {
-                toastIcon.className = "fa-solid fa-circle-exclamation text-red-400 text-sm";
-            } else if (type === 'info') {
-                toastIcon.className = "fa-solid fa-sparkles text-amber-400 text-sm";
-            } else {
-                toastIcon.className = "fa-solid fa-circle-check text-amber-400 text-sm";
+        function confirmDeleteProduct(id) {
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+
+            openConfirmModal(
+                'Hapus Desain Jersey?',
+                `Desain "${prod.name}" akan dihapus permanen dari katalog pembeli.`,
+                () => {
+                    products = products.filter(p => p.id !== id);
+                    saveProductsToStorage();
+                    renderAdminProducts();
+                    renderCatalog();
+                    populateProductDropdown();
+                    if (products.length > 0) {
+                        selectProductById(products[0].id);
+                    }
+                    showToast('Produk jersey berhasil dihapus.', 'info');
+                }
+            );
+        }
+
+        function confirmResetCatalog() {
+            openConfirmModal(
+                'Reset Katalog ke Bawaan?',
+                'Semua perubahan produk akan dikembalikan ke 6 desain contoh awal.',
+                () => {
+                    products = [...DEFAULT_PRODUCTS];
+                    saveProductsToStorage();
+                    renderAdminProducts();
+                    renderCatalog();
+                    populateProductDropdown();
+                    selectProductById(products[0].id);
+                    showToast('Katalog berhasil dikembalikan ke pengaturan awal.');
+                }
+            );
+        }
+
+        // =====================================================================
+        // PENGATURAN KEAMANAN: GANTI PASSWORD ADMIN & NOMOR WA
+        // =====================================================================
+        function handleChangePassword(e) {
+            e.preventDefault();
+            const oldPass = document.getElementById('old-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            const currentSavedPass = localStorage.getItem(STORAGE_KEYS.PASSWORD) || 'admin123';
+
+            if (oldPass !== currentSavedPass) {
+                showToast('Password lama tidak sesuai!', 'error');
+                return;
+            }
+            if (newPass.length < 4) {
+                showToast('Password baru minimal 4 karakter.', 'error');
+                return;
+            }
+            if (newPass !== confirmPass) {
+                showToast('Konfirmasi password baru tidak cocok!', 'error');
+                return;
             }
 
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 3000);
+            localStorage.setItem(STORAGE_KEYS.PASSWORD, newPass);
+            document.getElementById('change-password-form').reset();
+            showToast('Password Admin berhasil diperbarui! Gunakan password baru saat login berikutnya.');
         }
 
-        window.onload = function() {
-            document.getElementById('adminPasswordInput').focus();
-        };
+        function handleSaveStoreSettings(e) {
+            e.preventDefault();
+            const waInput = document.getElementById('store-wa-input').value.trim().replace(/[^0-9]/g, '');
+            if (waInput.length < 9) {
+                showToast('Masukkan nomor WhatsApp yang valid (contoh: 6281234567890).', 'error');
+                return;
+            }
+            localStorage.setItem(STORAGE_KEYS.WA_NUMBER, waInput);
+            document.getElementById('store-wa-input').value = waInput;
+            showToast('Nomor WhatsApp penerima pesanan berhasil disimpan!');
+        }
     </script>
 </body>
 </html>
